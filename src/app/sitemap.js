@@ -1,4 +1,4 @@
-const BASE_URL = "https://arun-kumar-durgollu.vercel.app";
+const BASE_URL = "https://dassdev.vercel.app";
 
 export default function sitemap() {
   return [
