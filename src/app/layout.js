@@ -21,6 +21,9 @@ export const metadata = {
   description:
     "DASS DEV builds, designs, and maintains modern websites, web applications, and AI-powered digital solutions.",
   manifest: "/site.webmanifest",
+  verification: {
+    google: "RcNyzzvd_HOyBN3luWVtfRqBpV9nTSHYnpOSJmr_4Qc",
+  },
   authors: [
     {
       name: "DASS DEV.",
