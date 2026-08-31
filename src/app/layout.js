@@ -2,6 +2,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/components/ThemeProvider";
 import { Toaster } from "sonner";
+import StructuredData from "@/components/seo/StructuredData";
+import PageLoadering from "@/components/PageLoader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,8 +14,9 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
+const BASE_URL = "https://dassdev.vercel.app";
 export const metadata = {
+  metadataBase: new URL(BASE_URL),
   title: {
     default: "DASS DEV. builds — Websites, Web Apps & Agentic AI",
     template: "%s | DASS DEV.",
@@ -24,6 +27,16 @@ export const metadata = {
   verification: {
     google: "RcNyzzvd_HOyBN3luWVtfRqBpV9nTSHYnpOSJmr_4Qc",
   },
+  keywords: [
+    "DASS DEV",
+    "web development",
+    "web design",
+    "website development",
+    "web applications",
+    "agentic AI",
+    "AI development",
+    "startup websites",
+  ],
   authors: [
     {
       name: "DASS DEV.",
@@ -102,7 +115,9 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <PageLoadering/>
         <ThemeProvider>
+          <StructuredData/>
           {children}
           <Toaster />
         </ThemeProvider>
