@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 import {
   FaCode,
@@ -181,10 +182,11 @@ export default function BuildShipMaintain() {
               lg:text-6xl
             "
           >
-            Build.
-            <span className="text-muted-foreground"> Ship.</span>
-            <br />
-            Maintain.
+            Build<span className="text-muted-foreground">→</span>
+            <span className="text-muted-foreground">
+              Ship<span className="text-muted-foreground">→</span>
+            </span>
+            {"\u00a0"}Maintain.
           </h2>
 
           <p

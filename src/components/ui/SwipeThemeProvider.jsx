@@ -11,6 +11,8 @@ import { flushSync } from "react-dom";
 
 const ThemeContext = createContext(null);
 
+const THEME_STORAGE_KEY = "dass-dev-theme";
+
 export function useSwipeTheme() {
   const context = useContext(ThemeContext);
 
@@ -20,6 +22,58 @@ export function useSwipeTheme() {
 
   return context;
 }
+
+/* -------------------------------------------------------------------------- */
+/* Theme helpers                                                              */
+/* -------------------------------------------------------------------------- */
+
+const getStoredTheme = () => {
+  if (typeof window === "undefined") {
+    return "light";
+  }
+
+  try {
+    const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+
+    if (storedTheme === "dark" || storedTheme === "light") {
+      return storedTheme;
+    }
+  } catch {
+    // localStorage may be unavailable
+  }
+
+  return "light";
+};
+
+const applyThemeToDocument = (theme) => {
+  if (typeof document === "undefined") {
+    return;
+  }
+
+  const root = document.documentElement;
+
+  root.setAttribute("data-theme", theme);
+
+  root.classList.toggle("dark", theme === "dark");
+
+  root.style.colorScheme = theme;
+};
+
+const persistTheme = (theme) => {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+  } catch {
+    // Ignore localStorage errors
+  }
+};
+
+/* -------------------------------------------------------------------------- */
+/* Direction                                                                  */
+/* -------------------------------------------------------------------------- */
 
 const normalizeDirection = (direction) => {
   switch (direction) {
@@ -39,6 +93,10 @@ const normalizeDirection = (direction) => {
       return direction;
   }
 };
+
+/* -------------------------------------------------------------------------- */
+/* View transition keyframes                                                  */
+/* -------------------------------------------------------------------------- */
 
 const getClipPathKeyframes = (direction, angle) => {
   const rad = ((angle - 90) * Math.PI) / 180;
@@ -153,6 +211,10 @@ const getClipPathKeyframes = (direction, angle) => {
   }
 };
 
+/* -------------------------------------------------------------------------- */
+/* Provider                                                                   */
+/* -------------------------------------------------------------------------- */
+
 export default function SwipeThemeProvider({
   children,
   duration = 650,
@@ -164,31 +226,61 @@ export default function SwipeThemeProvider({
   direction: defaultDirection = "left",
   angle = 0,
 }) {
+  /*
+   * IMPORTANT:
+   *
+   * Start with light for SSR.
+   *
+   * We then restore localStorage in the first client effect.
+   *
+   * This avoids using window/localStorage during server rendering.
+   */
   const [localTheme, setLocalTheme] = useState("light");
 
   const [isAnimating, setIsAnimating] = useState(false);
+
+  const [mounted, setMounted] = useState(false);
 
   const isControlled = themeProp !== undefined;
 
   const activeTheme = isControlled ? themeProp : localTheme;
 
-  /*
-   * Read the existing theme only after the
-   * component has mounted in the browser.
-   */
-  useEffect(() => {
-    const root = document.documentElement;
+  /* ---------------------------------------------------------------------- */
+  /* Restore persisted theme                                                */
+  /* ---------------------------------------------------------------------- */
 
-    const currentTheme = root.classList.contains("dark") ? "dark" : "light";
+  useEffect(() => {
+    const storedTheme = getStoredTheme();
 
     if (!isControlled) {
-      setLocalTheme(currentTheme);
+      setLocalTheme(storedTheme);
     }
-  }, [isControlled]);
 
-  /*
-   * Install view-transition styles once.
-   */
+    applyThemeToDocument(isControlled ? themeProp : storedTheme);
+
+    setMounted(true);
+  }, [isControlled, themeProp]);
+
+  /* ---------------------------------------------------------------------- */
+  /* Keep DOM synchronized with active theme                                */
+  /* ---------------------------------------------------------------------- */
+
+  useEffect(() => {
+    if (!mounted) {
+      return;
+    }
+
+    applyThemeToDocument(activeTheme);
+
+    if (!isControlled) {
+      persistTheme(activeTheme);
+    }
+  }, [activeTheme, isControlled, mounted]);
+
+  /* ---------------------------------------------------------------------- */
+  /* View transition styles                                                 */
+  /* ---------------------------------------------------------------------- */
+
   useEffect(() => {
     const styleId = "dass-dev-view-transition-styles";
 
@@ -231,6 +323,10 @@ export default function SwipeThemeProvider({
     };
   }, []);
 
+  /* ---------------------------------------------------------------------- */
+  /* Theme transition                                                       */
+  /* ---------------------------------------------------------------------- */
+
   const triggerSwipe = useCallback(
     (selectedDirection) => {
       if (isAnimating) {
@@ -256,36 +352,52 @@ export default function SwipeThemeProvider({
           setLocalTheme(targetTheme);
         }
 
-        const root = document.documentElement;
+        applyThemeToDocument(targetTheme);
 
-        root.setAttribute("data-theme", targetTheme);
-
-        root.classList.toggle("dark", targetTheme === "dark");
+        persistTheme(targetTheme);
 
         onThemeChange?.(targetTheme);
       };
 
       const doc = document;
 
-      /*
-       * Fallback for browsers without
-       * View Transitions.
-       */
+      /* ------------------------------------------------------------------ */
+      /* Browser fallback                                                    */
+      /* ------------------------------------------------------------------ */
+
       if (
         !doc.startViewTransition ||
         window.matchMedia("(prefers-reduced-motion: reduce)").matches
       ) {
         applyThemeChange();
+
         onSwipe?.();
+
         return;
       }
 
+      /* ------------------------------------------------------------------ */
+      /* View transition                                                     */
+      /* ------------------------------------------------------------------ */
+
       setIsAnimating(true);
 
-      const transition = doc.startViewTransition(() => {
+      let transition;
+
+      try {
+        transition = doc.startViewTransition(() => {
+          flushSync(() => {
+            applyThemeChange();
+            onSwipe?.();
+          });
+        });
+      } catch {
         applyThemeChange();
         onSwipe?.();
-      });
+        setIsAnimating(false);
+
+        return;
+      }
 
       const rawKeyframes = getKeyframes
         ? getKeyframes(activeDirection)
@@ -300,6 +412,11 @@ export default function SwipeThemeProvider({
 
       transition.ready
         .then(() => {
+          if (!keyframes || !keyframes.length) {
+            setIsAnimating(false);
+            return;
+          }
+
           const animation = document.documentElement.animate(keyframes, {
             duration,
             easing,
@@ -332,6 +449,14 @@ export default function SwipeThemeProvider({
       onThemeChange,
     ],
   );
+
+  /* ---------------------------------------------------------------------- */
+  /* Avoid rendering until theme restoration                                */
+  /* ---------------------------------------------------------------------- */
+
+  if (!mounted) {
+    return null;
+  }
 
   const contextValue = {
     theme: activeTheme,

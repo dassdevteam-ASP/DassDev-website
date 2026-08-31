@@ -19,6 +19,7 @@ import {
   FaChartSimple,
   FaHeadset,
 } from "react-icons/fa6";
+import Image from "next/image";
 
 const stats = [
   {
@@ -321,23 +322,52 @@ export const ProductCard = ({ product, translate }) => {
 
 export const Header = () => {
   return (
-    <div className="relative left-0 top-0 z-20 mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 md:px-8 md:py-40">
-      <p className="mb-5 text-xs font-medium uppercase tracking-[0.2em] text-neutral-500 dark:text-neutral-400">
-        What we build for
-      </p>
+    <div className="relative left-0 top-0 z-20 mx-auto w-full max-w-7xl px-4 sm:px-6 md:px-8 md:py-10">
+      <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-12 lg:gap-20">
+        <div>
+          <p className="mb-5 text-xs font-medium uppercase tracking-[0.2em] text-neutral-500 dark:text-neutral-400">
+            What we build for
+          </p>
 
-      <h1 className="text-4xl font-bold leading-[0.95] tracking-[-0.05em] text-black sm:text-5xl md:text-7xl dark:text-white">
-        We don't just build
-        <br />
-        <span className="text-neutral-400">websites.</span>
-      </h1>
+          <h1 className="text-4xl font-bold leading-[0.95] tracking-tighter text-black sm:text-5xl md:text-6xl lg:text-7xl dark:text-white">
+            We don't just build
+            <br />
+            <span className="text-neutral-400">websites.</span>
+          </h1>
 
-      <p className="mt-6 max-w-2xl text-sm leading-6 text-neutral-500 sm:text-base md:mt-8 md:text-xl md:leading-8 dark:text-neutral-300">
-        We design, build and maintain digital experiences that are fast,
-        discoverable, scalable and built around real business goals.
-      </p>
+          <p className="mt-6 max-w-2xl text-sm leading-6 text-neutral-500 sm:text-base md:mt-8 md:text-lg md:leading-8 lg:text-xl dark:text-neutral-300">
+            We design, build and maintain digital experiences that are fast,
+            discoverable, scalable and built around real business goals.
+          </p>
+        </div>
+
+        <div className="relative mx-auto flex items-center w-full max-w-md md:max-w-lg justify-center">
+          <div className="group relative aspect-square overflow-hidden rounded-4xl border border-black/10 bg-neutral-100 dark:border-white/10 dark:bg-zinc-900">
+            <Image
+              src="/hero-section.png"
+              alt="Creative digital design and web development workspace"
+              className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              width={1200}
+              height={1200}
+            />
+
+            <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-blue-500/20 via-transparent to-purple-500/30" />
+
+            <div className="pointer-events-none absolute inset-0 bg-black/5 dark:bg-black/20" />
+
+            <div className="absolute bottom-5 left-5 right-5 rounded-2xl border border-white/20 bg-white/70 p-4 backdrop-blur-xl dark:bg-black/40">
+              <p className="text-xs font-medium uppercase tracking-[0.18em] text-neutral-500 dark:text-neutral-400">
+                DASS DEV
+              </p>
+
+              <p className="mt-1 text-sm font-semibold text-neutral-900 dark:text-white">
+                Design. Build. Scale.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
-
 export { stats };

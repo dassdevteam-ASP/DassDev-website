@@ -131,7 +131,7 @@ function ServiceIcon({ children }) {
 
 function BrowserVisual({ hovered }) {
   return (
-    <div className="relative w-full max-w-[470px]">
+    <div className="relative w-full max-w-117.5">
       <motion.div
         className="relative overflow-hidden rounded-2xl border border-border/60 bg-background shadow-xl"
         animate={
@@ -162,7 +162,7 @@ function BrowserVisual({ hovered }) {
           </div>
         </div>
 
-        <div className="relative h-[190px] overflow-hidden p-5">
+        <div className="relative h-47.5 overflow-hidden p-5">
           <motion.div
             className="absolute inset-x-5 top-6"
             animate={
@@ -292,7 +292,7 @@ function DesignVisual({ hovered }) {
   return (
     <div className="relative flex w-full items-center justify-center">
       <motion.div
-        className="relative h-[185px] w-[210px] rounded-xl border border-border/60 bg-background p-3 shadow-xl"
+        className="relative h-46.25 w-52.5 rounded-xl border border-border/60 bg-background p-3 shadow-xl"
         animate={
           hovered
             ? {
@@ -403,7 +403,7 @@ function AIVisual({ hovered }) {
   ];
 
   return (
-    <div className="relative h-[200px] w-full">
+    <div className="relative h-50 w-full">
       <svg
         className="absolute inset-0 h-full w-full"
         viewBox="0 0 500 200"
@@ -522,9 +522,9 @@ function AIVisual({ hovered }) {
 
 function EcommerceVisual({ hovered }) {
   return (
-    <div className="relative flex h-[200px] w-full items-center justify-center">
+    <div className="relative flex h-50 w-full items-center justify-center">
       <motion.div
-        className="relative w-[250px] overflow-hidden rounded-xl border border-border/60 bg-background p-4 shadow-xl"
+        className="relative w-62.5 overflow-hidden rounded-xl border border-border/60 bg-background p-4 shadow-xl"
         animate={
           hovered
             ? {
@@ -706,7 +706,7 @@ function PerformanceVisual({ hovered }) {
 
 function MaintenanceVisual({ hovered }) {
   return (
-    <div className="relative flex h-[190px] w-full items-center justify-center">
+    <div className="relative flex h-47.5 w-full items-center justify-center">
       <motion.div
         className="relative flex size-28 items-center justify-center rounded-full border border-border/60 bg-background shadow-xl"
         animate={
@@ -899,7 +899,7 @@ export default function Bento2({ className }) {
               key={card.id}
               className={cn(
                 bentoCardClass,
-                "min-h-[370px]",
+                "min-h-92.5",
                 card.className,
               )}
               onMouseEnter={() => setHoveredCard(card.id)}
@@ -929,7 +929,7 @@ export default function Bento2({ className }) {
               </div>
 
               {/* Animated visual */}
-              <div className="relative z-10 mt-8 flex min-h-[190px] flex-1 items-center justify-center">
+              <div className="relative z-10 mt-8 flex min-h-47.5 flex-1 items-center justify-center">
                 {card.visual}
               </div>
 

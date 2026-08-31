@@ -40,6 +40,7 @@ import {
   Layers3,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Navigation2() {
   const { theme, triggerSwipe, isAnimating } = useSwipeTheme();
@@ -80,65 +81,81 @@ export default function Navigation2() {
 
         <Link
           href="/"
+          onClick={(event) => {
+            event.preventDefault();
+
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+          }}
           className="
-            group
-            flex
-            items-center
-            gap-2.5
-            outline-none
-          "
+    group
+    flex
+    items-center
+    gap-2.5
+    outline-none
+  "
           aria-label="DASS DEV home"
         >
           <div
             className="
-              flex
-              size-9
-              items-center
-              justify-center
-              rounded-xl
-              border
-              border-neutral-200
-              bg-neutral-100
-              text-primary
-              shadow-[inset_2px_2px_5px_rgba(0,0,0,0.06),inset_-2px_-2px_5px_rgba(255,255,255,0.8)]
-              transition-all
-              duration-300
-              group-hover:scale-105
-              dark:border-neutral-800
-              dark:bg-neutral-900
-              dark:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.35),inset_-2px_-2px_5px_rgba(255,255,255,0.03)]
-            "
+      flex
+      size-9
+      shrink-0
+      items-center
+      justify-center
+      rounded-xl
+      border
+      border-neutral-200
+      bg-neutral-100
+      shadow-[inset_2px_2px_5px_rgba(0,0,0,0.06),inset_-2px_-2px_5px_rgba(255,255,255,0.8)]
+      transition-all
+      duration-300
+      group-hover:scale-105
+      dark:border-neutral-800
+      dark:bg-neutral-900
+      dark:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.35),inset_-2px_-2px_5px_rgba(255,255,255,0.03)]
+    "
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="size-5"
-            >
-              <path d="M12 2L2 7l10 5 10-5-10-5z" />
-              <path d="M2 17l10 5 10-5" />
-              <path d="M2 12l10 5 10-5" />
-            </svg>
+            <Image
+              src="/apple-icon.png"
+              alt="DASS DEV"
+              width={32}
+              height={32}
+              className="grayscale"
+            />
           </div>
 
-          <div className="flex items-center">
-            <span
+          <div
+            className="
+      relative
+      flex
+      h-9
+      w-[118px]
+      shrink-0
+      items-center
+      overflow-hidden
+    "
+          >
+            <Image
+              src="/DassDev logo-bg.png"
+              alt="DASS DEV"
+              width={118}
+              height={36}
+              priority
               className="
-                text-lg
-                font-bold
-                tracking-[-0.04em]
-                text-neutral-900
-                dark:text-white
-              "
-            >
-              DASS DEV
-            </span>
-
-            <span className="ml-0.5 text-lg font-bold text-primary">.</span>
+        h-auto
+        w-full
+        object-contain
+        object-left
+        transition-transform
+        duration-300
+        ease-out
+        group-hover:-translate-y-0.5
+        grayscale
+      "
+            />
           </div>
         </Link>
 
@@ -213,7 +230,7 @@ export default function Navigation2() {
                   Services
                 </NavigationMenuTrigger>
 
-                <NavigationMenuContent className="!w-full">
+                <NavigationMenuContent className="w-full!">
                   <div
                     className="
                       mx-auto
@@ -282,7 +299,7 @@ export default function Navigation2() {
                       </h4>
 
                       <Link
-                        href="/services#web-design"
+                        href="/#"
                         className="
                           group
                           flex
@@ -301,7 +318,7 @@ export default function Navigation2() {
                       </Link>
 
                       <Link
-                        href="/services#branding"
+                        href="/#"
                         className="
                           group
                           flex
@@ -320,7 +337,7 @@ export default function Navigation2() {
                       </Link>
 
                       <Link
-                        href="/services#redesign"
+                        href="/#"
                         className="
                           group
                           flex
@@ -347,7 +364,7 @@ export default function Navigation2() {
                       </h4>
 
                       <Link
-                        href="/services#landing-pages"
+                        href="/"
                         className="
                           text-sm
                           font-medium
@@ -361,7 +378,7 @@ export default function Navigation2() {
                       </Link>
 
                       <Link
-                        href="/services#ecommerce"
+                        href="/"
                         className="
                           flex
                           items-center
@@ -379,7 +396,7 @@ export default function Navigation2() {
                       </Link>
 
                       <Link
-                        href="/services#applications"
+                        href="/"
                         className="
                           flex
                           items-center
@@ -397,7 +414,7 @@ export default function Navigation2() {
                       </Link>
 
                       <Link
-                        href="/services#seo"
+                        href="/"
                         className="
                           flex
                           items-center
@@ -423,12 +440,12 @@ export default function Navigation2() {
                       </h4>
 
                       <Link
-                        href="/contact"
+                        href="/"
                         className="
                           group
                           relative
                           flex
-                          min-h-[190px]
+                          min-h-47.5
                           flex-col
                           justify-between
                           overflow-hidden
@@ -482,20 +499,25 @@ export default function Navigation2() {
                             the best way forward.
                           </p>
                         </div>
+                        <Link href="/#contact">
+                          <Button
+                            variant="ghost"
+                            className="group h-auto p-0 text-sm font-semibold"
+                          >
+                            <span>Start a project</span>
 
-                        <div className="relative flex items-center text-sm font-semibold text-primary">
-                          Start a project
-                          <ArrowUpRight
-                            className="
-                              ml-1
-                              size-4
-                              transition-transform
-                              duration-300
-                              group-hover:translate-x-1
-                              group-hover:-translate-y-1
-                            "
-                          />
-                        </div>
+                            <ArrowUpRight
+                              className="
+                                ml-1
+                                size-4
+                                transition-transform
+                                duration-300
+                                group-hover:translate-x-1
+                                group-hover:-translate-y-1
+                              "
+                            />
+                          </Button>
+                        </Link>
                       </Link>
                     </div>
                   </div>
@@ -642,7 +664,7 @@ export default function Navigation2() {
           */}
 
           <Link
-            href="/contact"
+            href="/#contact"
             className="
               group
               inline-flex
@@ -662,6 +684,7 @@ export default function Navigation2() {
               hover:-translate-y-0.5
               hover:bg-primary
               hover:shadow-lg
+              dark:text-black
             "
           >
             Start a project
@@ -843,7 +866,7 @@ export default function Navigation2() {
                     >
                       <div className="flex flex-col gap-1">
                         <Link
-                          href="/services#websites"
+                          href="/"
                           className="
                             flex
                             items-center
@@ -864,7 +887,7 @@ export default function Navigation2() {
                         </Link>
 
                         <Link
-                          href="/services#landing-pages"
+                          href="/"
                           className="
                             flex
                             items-center
@@ -885,7 +908,7 @@ export default function Navigation2() {
                         </Link>
 
                         <Link
-                          href="/services#redesign"
+                          href="/"
                           className="
                             flex
                             items-center
@@ -906,7 +929,7 @@ export default function Navigation2() {
                         </Link>
 
                         <Link
-                          href="/services#ecommerce"
+                          href="/"
                           className="
                             flex
                             items-center
@@ -927,7 +950,7 @@ export default function Navigation2() {
                         </Link>
 
                         <Link
-                          href="/services#applications"
+                          href="/"
                           className="
                             flex
                             items-center
@@ -948,7 +971,7 @@ export default function Navigation2() {
                         </Link>
 
                         <Link
-                          href="/services#seo"
+                          href="/"
                           className="
                             flex
                             items-center
@@ -1036,7 +1059,7 @@ export default function Navigation2() {
                 "
               >
                 <Link
-                  href="/contact"
+                  href="/#contact"
                   className="
                     group
                     flex
@@ -1054,6 +1077,7 @@ export default function Navigation2() {
                     hover:-translate-y-0.5
                     hover:bg-primary
                     hover:shadow-lg
+                    dark:text-black
                   "
                 >
                   Start a project

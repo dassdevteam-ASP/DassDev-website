@@ -1,8 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
   reactCompiler: true,
-  allowedDevOrigins: ["outcomes-cos-spoken-merger.trycloudflare.com"],
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+    ],
+  },
+
+  // allowedDevOrigins: [
+  //   "outcomes-cos-spoken-merger.trycloudflare.com",
+  // ],
 };
 
 export default nextConfig;

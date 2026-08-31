@@ -1,9 +1,13 @@
 "use client";
 
 import { useForm, Controller } from "react-hook-form";
+import { toast } from "sonner";
+import { useState } from "react";
+
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+
 import {
   Select,
   SelectContent,
@@ -11,17 +15,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { Card, CardContent } from "@/components/ui/card";
+
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+
 import { Field, FieldLabel, FieldContent } from "@/components/ui/field";
 
-import {
-  FaArrowRight,
-  FaEnvelope,
-  FaRocket,
-} from "react-icons/fa6";
+import { FaArrowRight, FaEnvelope, FaRocket } from "react-icons/fa6";
+
 import { FaPhoneAlt } from "react-icons/fa";
+import Link from "next/link";
+
+const LEAD_FORM_URL = process.env.NEXT_PUBLIC_LEAD_FORM_URL;
 
 const defaultProps = {
   badge: "Start a Project",
@@ -33,8 +40,8 @@ const defaultProps = {
     "Tell us what you're trying to build. We'll help you turn the idea into a fast, polished website that is ready to ship.",
 
   contactInfo: {
-    email: "hello@dassdev.com",
-    phone: "+91 98765 43210",
+    email: "dassdev.team@gmail.com",
+    phone: "+91 99669 83223",
   },
 
   serviceOptions: [
@@ -68,53 +75,7 @@ const defaultProps = {
     },
   ],
 
-  budgetOptions: [
-    {
-      value: "under-25k",
-      label: "Under ₹25,000",
-    },
-    {
-      value: "25k-50k",
-      label: "₹25,000 – ₹50,000",
-    },
-    {
-      value: "50k-1l",
-      label: "₹50,000 – ₹1,00,000",
-    },
-    {
-      value: "1l-plus",
-      label: "₹1,00,000+",
-    },
-    {
-      value: "not-sure",
-      label: "Not sure yet",
-    },
-  ],
-
-  timelineOptions: [
-    {
-      value: "asap",
-      label: "As soon as possible",
-    },
-    {
-      value: "2-4-weeks",
-      label: "2–4 weeks",
-    },
-    {
-      value: "1-2-months",
-      label: "1–2 months",
-    },
-    {
-      value: "flexible",
-      label: "I'm flexible",
-    },
-  ],
-
   ctaLabel: "Start the Conversation",
-
-  onSubmit: (data) => {
-    console.log("Project enquiry:", data);
-  },
 };
 
 export default function ContactSolutionForm(props = {}) {
@@ -125,8 +86,6 @@ export default function ContactSolutionForm(props = {}) {
     subheadline,
     contactInfo,
     serviceOptions,
-    budgetOptions,
-    timelineOptions,
     ctaLabel,
     onSubmit,
   } = {
@@ -134,36 +93,118 @@ export default function ContactSolutionForm(props = {}) {
     ...props,
   };
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const {
     register,
     control,
     handleSubmit: handleFormSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
       fullName: "",
+      phoneNumber:"",
       email: "",
       company: "",
       service: "",
-      budget: "",
-      timeline: "",
       message: "",
+      website: "",
     },
   });
 
-  const onSubmitForm = (data) => {
-    onSubmit?.(data);
+  const onSubmitForm = async (data) => {
+    if (isSubmitting) {
+      return;
+    }
+    if (data.website) {
+      console.warn("Honeypot triggered.");
+
+      toast.error("Unable to submit the enquiry.");
+
+      return;
+    }
+
+    if (!LEAD_FORM_URL) {
+      toast.error("Contact form is not configured.");
+
+      console.error("NEXT_PUBLIC_LEAD_FORM_URL is missing.");
+
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    const payload = {
+      name: data.fullName.trim(),
+      phoneNumber: data.phoneNumber.trim(),
+      email: data.email.trim(),
+      company: data.company.trim(),
+      service: data.service,
+      projectDetails: data.message.trim(),
+      website: data.website.trim(),
+    };
+
+    try {
+      const response = await fetch(LEAD_FORM_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const responseText = await response.text();
+
+      console.log("Google Apps Script response:", responseText);
+
+      let result;
+
+      try {
+        result = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error(
+          "Invalid response from Google Apps Script:",
+          responseText,
+        );
+
+        throw new Error("Invalid response received from the server.");
+      }
+
+      if (!response.ok || result.success === false) {
+        throw new Error(
+          result.message || `Request failed with status ${response.status}`,
+        );
+      }
+      toast.success("Project enquiry sent successfully.", {
+        description: "We'll review your project and get back to you soon.",
+        position: "top-right",
+      });
+
+      reset();
+
+      onSubmit?.(data);
+    } catch (error) {
+      console.error("Project enquiry submission failed:", error);
+
+      toast.error("We couldn't send your enquiry.", {
+        description: error.message || "Please try again in a moment.",
+        position: "top-right",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <section
       id="contact"
       className="
-        bg-background
         flex
         min-h-screen
         items-center
         justify-center
+        bg-background
         px-4
         py-20
         sm:px-6
@@ -182,10 +223,6 @@ export default function ContactSolutionForm(props = {}) {
           lg:gap-20
         "
       >
-        {/* ============================================================ */}
-        {/* LEFT SIDE                                                     */}
-        {/* ============================================================ */}
-
         <div className="flex flex-col gap-6">
           {badge && (
             <Badge className="w-fit rounded-full px-3 py-1.5">
@@ -196,46 +233,44 @@ export default function ContactSolutionForm(props = {}) {
 
           <h1
             className="
-              text-foreground
               text-4xl
-              leading-[1.05]
               font-extrabold
+              leading-[1.05]
               tracking-[-0.04em]
+              text-foreground
               sm:text-5xl
               lg:text-6xl
             "
           >
             {headline}
 
-            <span className="text-primary block">{headlineAccent}</span>
+            <span className="block text-primary">{headlineAccent}</span>
           </h1>
 
           <p
             className="
-              text-muted-foreground
               max-w-lg
               text-base
               leading-7
+              text-muted-foreground
               sm:text-lg
             "
           >
             {subheadline}
           </p>
 
-          <Separator className="border-primary/40 my-2 w-16" />
+          <Separator className="my-2 w-16 border-primary/40" />
 
-          {/* Contact information */}
           <div className="flex flex-col gap-3">
-            {/* Email */}
-            <a
+            <Link
               href={`mailto:${contactInfo.email}`}
               className="
-                bg-muted
                 group
                 flex
                 items-center
                 gap-3
                 rounded-2xl
+                bg-muted
                 p-1
                 transition-transform
                 duration-200
@@ -244,26 +279,26 @@ export default function ContactSolutionForm(props = {}) {
             >
               <div
                 className="
-                  bg-card
                   flex
                   size-12
                   shrink-0
                   items-center
                   justify-center
                   rounded-xl
+                  bg-card
                 "
               >
-                <FaEnvelope className="text-primary text-sm" />
+                <FaEnvelope className="text-sm text-primary" />
               </div>
 
               <div>
                 <p
                   className="
-                    text-muted-foreground
                     text-xs
                     font-medium
                     uppercase
                     tracking-wider
+                    text-muted-foreground
                   "
                 >
                   Email
@@ -271,26 +306,25 @@ export default function ContactSolutionForm(props = {}) {
 
                 <p
                   className="
-                    text-foreground
                     text-sm
                     font-semibold
+                    text-foreground
                   "
                 >
                   {contactInfo.email}
                 </p>
               </div>
-            </a>
+            </Link>
 
-            {/* Phone */}
-            <a
+            <Link
               href={`tel:${contactInfo.phone}`}
               className="
-                bg-muted
                 group
                 flex
                 items-center
                 gap-3
                 rounded-2xl
+                bg-muted
                 p-1
                 transition-transform
                 duration-200
@@ -299,26 +333,26 @@ export default function ContactSolutionForm(props = {}) {
             >
               <div
                 className="
-                  bg-card
                   flex
                   size-12
                   shrink-0
                   items-center
                   justify-center
                   rounded-xl
+                  bg-card
                 "
               >
-                <FaPhoneAlt className="text-primary text-sm" />
+                <FaPhoneAlt className="text-sm text-primary" />
               </div>
 
               <div>
                 <p
                   className="
-                    text-muted-foreground
                     text-xs
                     font-medium
                     uppercase
                     tracking-wider
+                    text-muted-foreground
                   "
                 >
                   Phone
@@ -326,15 +360,15 @@ export default function ContactSolutionForm(props = {}) {
 
                 <p
                   className="
-                    text-foreground
                     text-sm
                     font-semibold
+                    text-foreground
                   "
                 >
                   {contactInfo.phone}
                 </p>
               </div>
-            </a>
+            </Link>
           </div>
 
           <div
@@ -352,14 +386,10 @@ export default function ContactSolutionForm(props = {}) {
           </div>
         </div>
 
-        {/* ============================================================ */}
-        {/* FORM                                                           */}
-        {/* ============================================================ */}
-
         <Card
           className="
-            bg-muted
             rounded-[2rem]
+            bg-muted
             shadow-sm
             ring-0
           "
@@ -369,10 +399,20 @@ export default function ContactSolutionForm(props = {}) {
               onSubmit={handleFormSubmit(onSubmitForm)}
               className="flex flex-col gap-5"
             >
-              {/* ------------------------------------------------------ */}
-              {/* Name                                                     */}
-              {/* ------------------------------------------------------ */}
+              <div
+                aria-hidden="true"
+                className="absolute left-[-9999px] h-0 w-0 overflow-hidden"
+              >
+                <label htmlFor="website">Website</label>
 
+                <input
+                  id="website"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  {...register("website")}
+                />
+              </div>
               <Field>
                 <FieldLabel htmlFor="fullName">Your Name</FieldLabel>
 
@@ -384,27 +424,57 @@ export default function ContactSolutionForm(props = {}) {
                       required: "Please enter your name.",
                     })}
                     className="
-                      bg-input
-                      focus-visible:ring-primary
                       rounded-xl
                       border-0
+                      bg-input
                       text-sm
                       shadow-[inset_0_1px_0_0_rgba(255,255,255,1)]
                       focus-visible:ring-1
+                      focus-visible:ring-primary
                     "
                   />
 
                   {errors.fullName && (
-                    <p className="text-destructive mt-1 text-xs">
+                    <p className="mt-1 text-xs text-destructive">
                       {errors.fullName.message}
                     </p>
                   )}
                 </FieldContent>
               </Field>
+              
+              <Field>
+                <FieldLabel htmlFor="phoneNumber">Phone Number</FieldLabel>
 
-              {/* ------------------------------------------------------ */}
-              {/* Email                                                    */}
-              {/* ------------------------------------------------------ */}
+                <FieldContent>
+                  <Input
+                    id="phoneNumber"
+                    type="tel"
+                    placeholder="+1 (555) 123-4567"
+                    {...register("phoneNumber", {
+                      required: "Please enter your phone number.",
+                      pattern: {
+                        value: /^\+?[1-9]\d{1,14}$/,
+                        message: "Please enter a valid phone number.",
+                      },
+                    })}
+                    className="
+                      rounded-xl
+                      border-0
+                      bg-input
+                      text-sm
+                      shadow-[inset_0_1px_0_0_rgba(255,255,255,1)]
+                      focus-visible:ring-1
+                      focus-visible:ring-primary
+                    "
+                  />
+
+                  {errors.phoneNumber && (
+                    <p className="mt-1 text-xs text-destructive">
+                      {errors.phoneNumber.message}
+                    </p>
+                  )}
+                </FieldContent>
+              </Field>
 
               <Field>
                 <FieldLabel htmlFor="email">Work Email</FieldLabel>
@@ -422,27 +492,23 @@ export default function ContactSolutionForm(props = {}) {
                       },
                     })}
                     className="
-                      bg-input
-                      focus-visible:ring-primary
                       rounded-xl
                       border-0
+                      bg-input
                       text-sm
                       shadow-[inset_0_1px_0_0_rgba(255,255,255,1)]
                       focus-visible:ring-1
+                      focus-visible:ring-primary
                     "
                   />
 
                   {errors.email && (
-                    <p className="text-destructive mt-1 text-xs">
+                    <p className="mt-1 text-xs text-destructive">
                       {errors.email.message}
                     </p>
                   )}
                 </FieldContent>
               </Field>
-
-              {/* ------------------------------------------------------ */}
-              {/* Company / Project                                       */}
-              {/* ------------------------------------------------------ */}
 
               <Field>
                 <FieldLabel htmlFor="company">
@@ -455,28 +521,24 @@ export default function ContactSolutionForm(props = {}) {
                     placeholder="Acme Technologies"
                     {...register("company")}
                     className="
-                      bg-input
-                      focus-visible:ring-primary
                       rounded-xl
                       border-0
+                      bg-input
                       text-sm
                       shadow-[inset_0_1px_0_0_rgba(255,255,255,1)]
                       focus-visible:ring-1
+                      focus-visible:ring-primary
                     "
                   />
                 </FieldContent>
               </Field>
-
-              {/* ------------------------------------------------------ */}
-              {/* Service                                                  */}
-              {/* ------------------------------------------------------ */}
 
               <Field>
                 <FieldLabel htmlFor="service">
                   What do you need built?
                 </FieldLabel>
 
-                <FieldContent className={"w-full"}>
+                <FieldContent className="w-full">
                   <Controller
                     name="service"
                     control={control}
@@ -491,14 +553,14 @@ export default function ContactSolutionForm(props = {}) {
                         <SelectTrigger
                           id="service"
                           className="
-                            bg-input
-                            focus:ring-primary
-                            text-muted-foreground
                             rounded-xl
                             border-0
+                            bg-input
                             text-sm
+                            text-muted-foreground
                             shadow-[inset_0_1px_0_0_rgba(255,255,255,1)]
                             focus:ring-1
+                            focus:ring-primary
                           "
                         >
                           <SelectValue placeholder="Choose what you need..." />
@@ -520,16 +582,12 @@ export default function ContactSolutionForm(props = {}) {
                   />
 
                   {errors.service && (
-                    <p className="text-destructive mt-1 text-xs">
+                    <p className="mt-1 text-xs text-destructive">
                       {errors.service.message}
                     </p>
                   )}
                 </FieldContent>
               </Field>
-
-              {/* ------------------------------------------------------ */}
-              {/* Message                                                  */}
-              {/* ------------------------------------------------------ */}
 
               <Field>
                 <FieldLabel htmlFor="message">
@@ -545,56 +603,57 @@ export default function ContactSolutionForm(props = {}) {
                       required: "Tell us a little about your project.",
                     })}
                     className="
-                      bg-input
-                      focus-visible:ring-primary
                       resize-none
                       rounded-xl
                       border-0
+                      bg-input
                       text-sm
                       shadow-[inset_0_1px_0_0_rgba(255,255,255,1)]
                       focus-visible:ring-1
+                      focus-visible:ring-primary
                     "
                   />
 
                   {errors.message && (
-                    <p className="text-destructive mt-1 text-xs">
+                    <p className="mt-1 text-xs text-destructive">
                       {errors.message.message}
                     </p>
                   )}
                 </FieldContent>
               </Field>
 
-              {/* ------------------------------------------------------ */}
-              {/* Submit                                                   */}
-              {/* ------------------------------------------------------ */}
-
               <Button
                 type="submit"
+                disabled={isSubmitting}
                 className="
-                  bg-primary
-                  text-primary-foreground
-                  hover:bg-primary/90
                   group
                   mt-1
                   w-full
                   rounded-xl
+                  bg-primary
                   py-5
                   text-sm
                   font-semibold
+                  text-primary-foreground
                   shadow-[inset_0_2px_0_0_rgba(255,255,255,0.5),inset_0_-2px_0_0_rgba(0,0,0,0.2)]
                   transition-all
+                  hover:bg-primary/90
+                  disabled:pointer-events-none
+                  disabled:opacity-60
                 "
               >
-                {ctaLabel}
+                {isSubmitting ? "Sending..." : ctaLabel}
 
-                <FaArrowRight
-                  className="
-                    ml-2
-                    text-xs
-                    transition-transform
-                    group-hover:translate-x-1
-                  "
-                />
+                {!isSubmitting && (
+                  <FaArrowRight
+                    className="
+                      ml-2
+                      text-xs
+                      transition-transform
+                      group-hover:translate-x-1
+                    "
+                  />
+                )}
               </Button>
 
               <p

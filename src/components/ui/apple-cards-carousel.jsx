@@ -21,31 +21,34 @@ export const Carousel = ({ items, initialScroll = 0 }) => {
   const carouselRef = useRef(null);
 
   const [canScrollLeft, setCanScrollLeft] = useState(false);
+
   const [canScrollRight, setCanScrollRight] = useState(false);
+
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [mounted, setMounted] = useState(false);
 
   const checkScrollability = () => {
     const element = carouselRef.current;
 
-    if (!element) return;
+    if (!element) {
+      return;
+    }
 
-    const maxScrollLeft = element.scrollWidth - element.clientWidth;
+    const maxScrollLeft = Math.max(
+      0,
+      element.scrollWidth - element.clientWidth,
+    );
 
     setCanScrollLeft(element.scrollLeft > 1);
+
     setCanScrollRight(element.scrollLeft < maxScrollLeft - 1);
   };
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-
     const element = carouselRef.current;
 
-    if (!element) return;
+    if (!element) {
+      return;
+    }
 
     element.scrollLeft = initialScroll;
 
@@ -57,15 +60,21 @@ export const Carousel = ({ items, initialScroll = 0 }) => {
 
     resizeObserver.observe(element);
 
+    window.addEventListener("resize", checkScrollability);
+
     return () => {
       resizeObserver.disconnect();
+
+      window.removeEventListener("resize", checkScrollability);
     };
-  }, [initialScroll, mounted]);
+  }, [initialScroll]);
 
   const scroll = (direction) => {
     const element = carouselRef.current;
 
-    if (!element) return;
+    if (!element) {
+      return;
+    }
 
     element.scrollBy({
       left: direction * 320,
@@ -76,9 +85,12 @@ export const Carousel = ({ items, initialScroll = 0 }) => {
   const handleCardClose = (index) => {
     const element = carouselRef.current;
 
-    if (!element) return;
+    if (!element) {
+      return;
+    }
 
     const cardWidth = window.innerWidth < 768 ? 256 : 384;
+
     const gap = 16;
 
     element.scrollTo({
@@ -91,21 +103,33 @@ export const Carousel = ({ items, initialScroll = 0 }) => {
 
   return (
     <CarouselContext.Provider
-      value={{ onCardClose: handleCardClose, currentIndex }}
+      value={{
+        onCardClose: handleCardClose,
+        currentIndex,
+      }}
     >
       <div className="relative w-full">
         <div
           ref={carouselRef}
           onScroll={checkScrollability}
-          className="flex w-full overflow-x-auto overscroll-x-contain scroll-smooth py-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:py-20"
+          className="flex w-full overflow-x-auto overscroll-x-contain scroll-smooth py-10 scrollbar-none [&::-webkit-scrollbar]:hidden md:py-20"
         >
           <div className="mx-auto flex max-w-7xl gap-4 px-4">
             {items.map((item, index) => (
               <motion.div
                 key={`card-${index}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
+                initial={{
+                  opacity: 0,
+                  y: 20,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                viewport={{
+                  once: true,
+                  amount: 0.2,
+                }}
                 transition={{
                   duration: 0.45,
                   delay: index * 0.06,
@@ -122,13 +146,13 @@ export const Carousel = ({ items, initialScroll = 0 }) => {
         <div className="mx-auto flex max-w-7xl justify-end gap-2 px-4">
           <CarouselButton
             direction="left"
-            disabled={!mounted || !canScrollLeft}
+            disabled={!canScrollLeft}
             onClick={() => scroll(-1)}
           />
 
           <CarouselButton
             direction="right"
-            disabled={!mounted || !canScrollRight}
+            disabled={!canScrollRight}
             onClick={() => scroll(1)}
           />
         </div>
@@ -145,7 +169,7 @@ function CarouselButton({ direction, disabled, onClick }) {
     <button
       type="button"
       onClick={onClick}
-      disabled={Boolean(disabled)}
+      disabled={disabled}
       aria-label={
         direction === "left" ? "Previous testimonials" : "Next testimonials"
       }
@@ -211,7 +235,7 @@ export const Card = ({
         type="button"
         layoutId={layout ? `card-${card.id}` : undefined}
         onClick={handleOpen}
-        className="group relative z-10 flex h-80 w-64 shrink-0 flex-col items-start justify-start overflow-hidden rounded-3xl bg-neutral-900 text-left md:h-[38rem] md:w-96"
+        className="group relative z-10 flex h-80 w-64 shrink-0 flex-col items-start justify-start overflow-hidden rounded-3xl bg-neutral-900 text-left md:h-152 md:w-96"
       >
         <video
           ref={cardVideoRef}
@@ -225,7 +249,7 @@ export const Card = ({
           className="absolute inset-0 z-10 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
 
-        <div className="pointer-events-none absolute inset-0 z-20 bg-gradient-to-b from-black/60 via-black/10 to-black/90" />
+        <div className="pointer-events-none absolute inset-0 z-20 bg-linear-to-b from-black/60 via-black/10 to-black/90" />
 
         <div className="absolute right-6 top-6 z-40 flex size-11 items-center justify-center rounded-full border border-white/30 bg-white/10 text-white backdrop-blur-md transition-all duration-300 group-hover:scale-110 group-hover:bg-white/20">
           <span className="text-xs">▶</span>
@@ -317,7 +341,7 @@ function TestimonialModal({ card, open, onClose, layout }) {
             exit={{ opacity: 0, scale: 0.96, y: 20 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
             layoutId={layout ? `card-${card.id}` : undefined}
-            className="relative z-[60] mx-auto my-6 max-w-5xl overflow-hidden rounded-3xl bg-white p-4 font-sans md:my-10 md:p-8 dark:bg-neutral-950"
+            className="relative z-60 mx-auto my-6 max-w-5xl overflow-hidden rounded-3xl bg-white p-4 font-sans md:my-10 md:p-8 dark:bg-neutral-950"
           >
             <button
               type="button"

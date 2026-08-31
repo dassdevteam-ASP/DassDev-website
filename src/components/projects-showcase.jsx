@@ -12,6 +12,7 @@ import {
   IconExternalLink,
   IconSparkles,
 } from "@tabler/icons-react";
+import Image from "next/image";
 
 const projects = [
   {
@@ -241,8 +242,8 @@ export default function ProjectsShowcase() {
             absolute
             left-1/2
             top-40
-            h-[500px]
-            w-[700px]
+            h-125
+            w-175
             -translate-x-1/2
             rounded-full
             bg-primary/10
@@ -382,8 +383,7 @@ export default function ProjectsShowcase() {
             justify-center
             overflow-x-auto
             pb-2
-            [scrollbar-width:none]
-            [&::-webkit-scrollbar]:hidden
+            scrollbar-none
           "
         >
           <div
@@ -460,11 +460,11 @@ export default function ProjectsShowcase() {
           relative
           z-10
           mt-16
-          min-h-[650px]
+          min-h-162.5
           w-full
           overflow-hidden
           md:mt-20
-          md:min-h-[720px]
+          md:min-h-180
         "
       >
         {/* Desktop side previews */}
@@ -475,7 +475,7 @@ export default function ProjectsShowcase() {
             inset-x-0
             top-0
             hidden
-            h-[570px]
+            h-142.5
             items-center
             justify-center
             md:flex
@@ -500,9 +500,9 @@ export default function ProjectsShowcase() {
                 absolute
                 left-[calc(50%-650px)]
                 top-12
-                h-[440px]
-                w-[420px]
-                -rotate-[7deg]
+                h-110
+                w-105
+                rotate-[-7deg]
                 overflow-hidden
                 rounded-3xl
                 border
@@ -517,7 +517,7 @@ export default function ProjectsShowcase() {
                 className="
                   absolute
                   inset-0
-                  bg-gradient-to-t
+                  bg-linear-to-t
                   from-background
                   via-background/20
                   to-transparent
@@ -562,8 +562,8 @@ export default function ProjectsShowcase() {
                 absolute
                 right-[calc(50%-650px)]
                 top-12
-                h-[440px]
-                w-[420px]
+                h-110
+                w-105
                 rotate-[7deg]
                 overflow-hidden
                 rounded-3xl
@@ -579,7 +579,7 @@ export default function ProjectsShowcase() {
                 className="
                   absolute
                   inset-0
-                  bg-gradient-to-t
+                  bg-linear-to-t
                   from-background
                   via-background/20
                   to-transparent
@@ -658,7 +658,7 @@ export default function ProjectsShowcase() {
               <div
                 className="
                   relative
-                  aspect-[16/9]
+                  aspect-video
                   overflow-hidden
                   bg-muted
                 "
@@ -670,7 +670,7 @@ export default function ProjectsShowcase() {
                   className="
                     absolute
                     inset-0
-                    bg-gradient-to-b
+                    bg-linear-to-b
                     from-black/20
                     via-transparent
                     to-black/60
@@ -1176,7 +1176,7 @@ export default function ProjectsShowcase() {
 
 function ProjectImage({ project, priority = false }) {
   return (
-    <img
+    <Image
       src={project.image}
       alt={`${project.title} project`}
       loading={priority ? "eager" : "lazy"}
@@ -1192,6 +1192,8 @@ function ProjectImage({ project, priority = false }) {
         ease-out
         group-hover:scale-105
       "
+      width={400}
+      height={400}
     />
   );
 }

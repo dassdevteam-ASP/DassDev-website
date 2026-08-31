@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { FiPlus, FiMinus } from "react-icons/fi";
 import {
   Accordion,
   AccordionContent,

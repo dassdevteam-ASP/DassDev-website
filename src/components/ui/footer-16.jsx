@@ -1,11 +1,8 @@
 "use client";
 import { motion } from "motion/react";
-import {
-  FaFacebookF,
-  FaInstagram,
-  FaLinkedinIn,
-  FaXTwitter,
-} from "react-icons/fa6";
+import Image from "next/image";
+import Link from "next/link";
+import { FaGithub, FaInstagram, FaYoutube } from "react-icons/fa6";
 
 // Simple logo icon placeholder
 function LogoIcon({ className }) {
@@ -25,28 +22,66 @@ const defaultColumns = [
   {
     title: "Studio",
     links: [
-      { label: "About DASS DEV", href: "/about" },
-      { label: "Our Process", href: "/process" },
-      { label: "Our Work", href: "/work" },
-      { label: "Why DASS DEV", href: "/#why-us" },
+      {
+        label: "About DASS DEV",
+        href: "#about",
+      },
+      {
+        label: "Our Process",
+        href: "#process",
+      },
+      {
+        label: "Our Work",
+        href: "#projects",
+      },
+      {
+        label: "Why DASS DEV",
+        href: "#why-us",
+      },
     ],
   },
+
   {
     title: "Services",
     links: [
-      { label: "Business Websites", href: "/services#websites" },
-      { label: "Landing Pages", href: "/services#landing-pages" },
-      { label: "Website Redesign", href: "/services#redesign" },
-      { label: "Maintenance & Support", href: "/services#maintenance" },
+      {
+        label: "Web Development",
+        href: "#services",
+      },
+      {
+        label: "Landing Pages",
+        href: "#services",
+      },
+      {
+        label: "Website Redesign",
+        href: "#services",
+      },
+      {
+        label: "E-commerce",
+        href: "#services",
+      },
     ],
   },
+
   {
     title: "Start Here",
     links: [
-      { label: "View Projects", href: "/work" },
-      { label: "How We Work", href: "/process" },
-      { label: "Pricing", href: "/pricing" },
-      { label: "Start a Project", href: "/contact" },
+      {
+        label: "View Projects",
+        href: "#projects",
+      },
+      {
+        label: "How We Work",
+        href: "#process",
+      },
+      {
+        label: "Client Stories",
+        href: "#testimonials",
+      },
+      {
+        label: "Start a Project",
+        href: "#contact",
+      },
     ],
   },
 ];
@@ -58,10 +93,9 @@ const defaultLegalLinks = [
 ];
 
 const defaultSocials = [
-  { label: "Facebook", href: "#", icon: "facebook" },
-  { label: "Twitter", href: "#", icon: "twitter" },
-  { label: "Instagram", href: "#", icon: "instagram" },
-  { label: "LinkedIn", href: "#", icon: "linkedin" },
+  { label: "Youtube", href: "https://youtube.com/@DassDevtech", icon: "youtube" },
+  { label: "Github", href: "https://github.com/dassdevteam-ASP", icon: "github" },
+  { label: "Instagram", href: "https://www.instagram.com/dassdev.in", icon: "instagram" },
 ];
 
 const backgroundUrl = "https://assets.watermelon.sh/footer-16-bg.avif";
@@ -116,10 +150,9 @@ const linkVariants = {
 };
 
 const socialIcons = {
-  facebook: FaFacebookF,
-  twitter: FaXTwitter,
   instagram: FaInstagram,
-  linkedin: FaLinkedinIn,
+  youtube: FaYoutube,
+  github: FaGithub,
 };
 
 export function Footer16({
@@ -148,7 +181,7 @@ export function Footer16({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, amount: 0.22 }}
-        className="relative mx-auto flex min-h-[620px] flex-col justify-end pt-16 sm:min-h-[680px] lg:min-h-[812px]"
+        className="relative mx-auto flex min-h-155 flex-col justify-end pt-16 sm:min-h-170 lg:min-h-203"
       >
         <motion.div
           variants={wordmarkVariants}
@@ -183,19 +216,25 @@ export function Footer16({
           </svg>
         </motion.div>
 
-        <div className="relative z-10 border-t border-white/10 bg-black/1 px-4 pt-9 pb-7 shadow-[0_-24px_80px_rgba(9,10,14,0.34)] backdrop-blur-xs sm:px-12 sm:pt-11 sm:pb-8 lg:pt-[46px]">
+        <div className="relative z-10 border-t border-white/10 bg-black/1 px-4 pt-9 pb-7 shadow-[0_-24px_80px_rgba(9,10,14,0.34)] backdrop-blur-xs sm:px-12 sm:pt-11 sm:pb-8 lg:pt-11.5">
           <div className="grid gap-10 lg:grid-cols-[minmax(220px,1fr)_minmax(520px,0.98fr)] lg:gap-x-20">
             <motion.div variants={riseVariants} className="max-w-2xl">
-              <a
+              <Link
                 href="#"
                 className="group inline-flex min-h-10 items-start gap-2 text-zinc-50 transition-[opacity,transform] duration-200 ease-out hover:opacity-85 active:scale-[0.96]"
                 aria-label={`${brandName} home`}
               >
-                <LogoIcon className="size-8 -translate-y-2" />
+                <Image
+                  src="/apple-icon.png"
+                  alt="DassDev logo"
+                  width={32}
+                  height={32}
+                  className={"grayscale-50 pb-1"}
+                />
                 <span className="text-xl leading-none font-normal tracking-wide">
                   {brandName}
                 </span>
-              </a>
+              </Link>
               <p className="text-md max-w-lg leading-relaxed font-normal text-pretty whitespace-pre-line text-zinc-300/78 sm:text-sm">
                 {tagline}
               </p>
@@ -204,17 +243,14 @@ export function Footer16({
             <motion.nav
               variants={sectionVariants}
               aria-label="Footer navigation"
-              className="grid grid-cols-1 gap-7 min-[520px]:grid-cols-3 min-[520px]:gap-x-10 lg:gap-x-[66px]"
+              className="grid grid-cols-1 gap-7 min-[520px]:grid-cols-3 min-[520px]:gap-x-10 lg:gap-x-16.5"
             >
               {columns.map((column) => (
                 <motion.div variants={riseVariants} key={column.title}>
                   <h3 className="text-md leading-none font-light tracking-wide text-zinc-50 uppercase">
                     {column.title}
                   </h3>
-                  <motion.ul
-                    variants={listVariants}
-                    className="mt-4 space-y-[8px]"
-                  >
+                  <motion.ul variants={listVariants} className="mt-4 space-y-2">
                     {column.links.map((link) => (
                       <motion.li variants={linkVariants} key={link.label}>
                         <a
@@ -253,7 +289,7 @@ export function Footer16({
                         aria-label={social.label}
                         className="group relative flex size-10 items-center justify-start text-zinc-400 transition-[color,transform] duration-200 ease-out hover:text-zinc-50 active:scale-[0.96]"
                       >
-                        <Icon className="group-hover:blur-0 size-4 transition-[opacity,scale,filter] duration-200 ease-out group-hover:scale-110 group-hover:opacity-100" />
+                        <Icon className="group-hover:blur-0 size-6 transition-[opacity,scale,filter] duration-200 ease-out group-hover:scale-110 group-hover:opacity-100" />
                       </a>
                     </motion.li>
                   );
