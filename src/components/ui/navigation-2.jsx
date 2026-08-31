@@ -154,6 +154,7 @@ export default function Navigation2() {
         ease-out
         group-hover:-translate-y-0.5
         grayscale
+        dark:drop-shadow-[0_0_1px_white]
       "
             />
           </div>

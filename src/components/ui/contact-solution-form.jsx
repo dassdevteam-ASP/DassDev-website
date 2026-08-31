@@ -23,7 +23,7 @@ import { Badge } from "@/components/ui/badge";
 
 import { Field, FieldLabel, FieldContent } from "@/components/ui/field";
 
-import { FaArrowRight, FaEnvelope, FaRocket } from "react-icons/fa6";
+import { FaArrowRight, FaEnvelope, FaRocket, FaWhatsapp } from "react-icons/fa6";
 
 import { FaPhoneAlt } from "react-icons/fa";
 import Link from "next/link";
@@ -42,6 +42,7 @@ const defaultProps = {
   contactInfo: {
     email: "dassdev.team@gmail.com",
     phone: "+91 99669 83223",
+    whatsapp: "+91 99669 83223",
   },
 
   serviceOptions: [
@@ -366,6 +367,59 @@ export default function ContactSolutionForm(props = {}) {
                   "
                 >
                   {contactInfo.phone}
+                </p>
+              </div>
+            </Link>
+            <Link
+              href={`https://wa.me/${contactInfo.whatsapp}`}
+              className="
+                group
+                flex
+                items-center
+                gap-3
+                rounded-2xl
+                bg-muted
+                p-1
+                transition-transform
+                duration-200
+                hover:-translate-y-0.5
+              "
+            >
+              <div
+                className="
+                  flex
+                  size-12
+                  shrink-0
+                  items-center
+                  justify-center
+                  rounded-xl
+                  bg-card
+                "
+              >
+                <FaWhatsapp className="text-sm text-primary" />
+              </div>
+
+              <div>
+                <p
+                  className="
+                    text-xs
+                    font-medium
+                    uppercase
+                    tracking-wider
+                    text-muted-foreground
+                  "
+                >
+                  WhatsApp
+                </p>
+
+                <p
+                  className="
+                    text-sm
+                    font-semibold
+                    text-foreground
+                  "
+                >
+                  {contactInfo.whatsapp}
                 </p>
               </div>
             </Link>
