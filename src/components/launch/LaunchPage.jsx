@@ -83,7 +83,7 @@ export default function LaunchPage() {
       <div
         className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "url('/launch/launch-bg2.png')",
+          backgroundImage: "url('/launch-bg2.png')",
         }}
         aria-hidden="true"
       />
@@ -109,12 +109,6 @@ export default function LaunchPage() {
         }}
         aria-hidden="true"
       />
-
-      {/* ================================================== */}
-      {/* KRISHNA DECORATIONS                                 */}
-      {/* ================================================== */}
-
-      <LaunchDecorations />
 
       {/* ================================================== */}
       {/* CONFETTI                                            */}
@@ -226,22 +220,14 @@ export default function LaunchPage() {
 
         {/* Bottom */}
         <div className="flex flex-1 items-end justify-center pb-2 pt-12 sm:pb-5">
-          <div className="flex flex-col items-center text-center">
-            <div className="mb-4 flex items-center gap-3">
-              <span className="h-px w-10 bg-foreground/20" />
-
-              <PeacockFeather />
-
-              <span className="h-px w-10 bg-foreground/20" />
-            </div>
-
-            <p className="max-w-md text-xs leading-relaxed text-foreground/60 sm:text-sm">
+          <div className="flex flex-col items-center text-center text-black">
+            <p className="max-w-md text-2xl leading-relaxed">
               When purpose meets technology,
               <br />
               beautiful things happen.
             </p>
 
-            <p className="mt-4 text-[9px] font-medium uppercase tracking-[0.3em] text-foreground/40">
+            <p className="mt-4 text-[9px] font-medium uppercase tracking-[0.3em]">
               © {new Date().getFullYear()} DASS DEV.
             </p>
           </div>
