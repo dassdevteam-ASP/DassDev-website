@@ -75,16 +75,56 @@ export default function LaunchPage() {
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-background text-foreground">
-      {/* Background atmosphere */}
-      <div className="pointer-events-none absolute inset-0">
-      </div>
+    <main className="relative min-h-screen overflow-hidden text-foreground">
+      {/* ================================================== */}
+      {/* BACKGROUND IMAGE                                   */}
+      {/* ================================================== */}
 
-      {/* Krishna / spiritual decorations */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: "url('/launch/launch-bg2.png')",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* ================================================== */}
+      {/* BACKGROUND OVERLAY                                 */}
+      {/* ================================================== */}
+
+      <div
+        className="pointer-events-none absolute inset-0 bg-background/25"
+        aria-hidden="true"
+      />
+
+      {/* ================================================== */}
+      {/* SOFT CENTER OVERLAY                                 */}
+      {/* ================================================== */}
+
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(circle at center, transparent 20%, hsl(var(--background) / 0.18) 75%, hsl(var(--background) / 0.45) 100%)",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* ================================================== */}
+      {/* KRISHNA DECORATIONS                                 */}
+      {/* ================================================== */}
+
       <LaunchDecorations />
 
-      {/* Confetti */}
+      {/* ================================================== */}
+      {/* CONFETTI                                            */}
+      {/* ================================================== */}
+
       <AnimatePresence>{showBlast && <ConfettiBlast />}</AnimatePresence>
+
+      {/* ================================================== */}
+      {/* MAIN CONTENT                                        */}
+      {/* ================================================== */}
 
       <div className="relative z-20 flex min-h-screen flex-col items-center px-5 py-10 sm:px-8 sm:py-14">
         {/* Logo */}
@@ -103,14 +143,14 @@ export default function LaunchPage() {
             }}
             className="mb-7 text-center"
           >
-            <p className="text-[10px] font-semibold uppercase tracking-[0.4em] text-muted-foreground sm:text-xs">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.4em] text-foreground/70 sm:text-xs">
               The wait is almost over
             </p>
 
-            <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-5xl">
+            <h1 className="mt-3 text-3xl font-bold tracking-tight text-foreground drop-shadow-sm sm:text-5xl">
               Something special
               <br />
-              <span className="text-muted-foreground">is on the way.</span>
+              <span className="text-foreground/60">is on the way.</span>
             </h1>
           </motion.div>
 
@@ -142,8 +182,8 @@ export default function LaunchPage() {
             className={[
               "mt-8 flex h-14 w-full max-w-sm items-center justify-center gap-3 rounded-full border px-8 text-sm font-semibold uppercase tracking-[0.18em] transition-all duration-500",
               isLaunched
-                ? "border-primary bg-primary text-primary-foreground shadow-lg shadow-primary/20"
-                : "cursor-not-allowed border-border bg-muted text-muted-foreground opacity-70",
+                ? "border-primary bg-primary text-primary-foreground shadow-lg shadow-primary/30"
+                : "cursor-not-allowed border-border/60 bg-background/60 text-muted-foreground backdrop-blur-md",
             ].join(" ")}
           >
             {!isLaunched ? (
@@ -167,7 +207,7 @@ export default function LaunchPage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="mt-5 text-center text-xs text-muted-foreground"
+                className="mt-5 text-center text-xs text-foreground/60"
               >
                 The website will unlock when the countdown reaches zero.
               </motion.p>
@@ -188,18 +228,20 @@ export default function LaunchPage() {
         <div className="flex flex-1 items-end justify-center pb-2 pt-12 sm:pb-5">
           <div className="flex flex-col items-center text-center">
             <div className="mb-4 flex items-center gap-3">
-              <span className="h-px w-10 bg-border" />
+              <span className="h-px w-10 bg-foreground/20" />
+
               <PeacockFeather />
-              <span className="h-px w-10 bg-border" />
+
+              <span className="h-px w-10 bg-foreground/20" />
             </div>
 
-            <p className="max-w-md text-xs leading-relaxed text-muted-foreground sm:text-sm">
+            <p className="max-w-md text-xs leading-relaxed text-foreground/60 sm:text-sm">
               When purpose meets technology,
               <br />
               beautiful things happen.
             </p>
 
-            <p className="mt-4 text-[9px] font-medium uppercase tracking-[0.3em] text-muted-foreground/60">
+            <p className="mt-4 text-[9px] font-medium uppercase tracking-[0.3em] text-foreground/40">
               © {new Date().getFullYear()} DASS DEV.
             </p>
           </div>
