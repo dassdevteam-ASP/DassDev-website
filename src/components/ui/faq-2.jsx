@@ -192,84 +192,28 @@ export default function FAQ2({
   return (
     <section
       id="faq"
-      className="
-        bg-background
-        flex
-        w-full
-        flex-col
-        items-center
-        px-4
-        py-20
-        sm:py-24
-      "
+      className="bg-background flex w-full flex-col items-center px-4 py-20 sm:py-24"
     >
       {/* Header */}
       <div className="mx-auto mb-10 max-w-xl text-center md:mb-12">
-        <p
-          className="
-            text-muted-foreground
-            mb-4
-            inline-flex
-            items-center
-            gap-1.5
-            text-xs
-            font-medium
-            tracking-widest
-            uppercase
-          "
-        >
+        <p className="text-muted-foreground mb-4 inline-flex items-center gap-1.5 text-xs font-medium tracking-widest uppercase">
           <span className="bg-muted-foreground inline-block h-1 w-1 rounded-full" />
 
           {badge}
         </p>
 
-        <h2
-          className="
-            text-foreground
-            mb-4
-            text-3xl
-            leading-tight
-            font-bold
-            tracking-tight
-            sm:text-4xl
-            md:text-5xl
-          "
-        >
+        <h2 className="text-foreground mb-4 text-3xl leading-tight font-bold tracking-tight sm:text-4xl md:text-5xl">
           {title}
         </h2>
 
-        <p
-          className="
-            text-muted-foreground
-            mx-auto
-            max-w-md
-            text-sm
-            leading-relaxed
-            md:text-base
-          "
-        >
+        <p className="text-muted-foreground mx-auto max-w-md text-sm leading-relaxed md:text-base">
           {subtitle}
         </p>
       </div>
 
       {/* Categories */}
       <div className="mx-auto mb-8 w-full max-w-3xl">
-        <div
-          className="
-            scrollbar-hide
-            bg-muted
-            mx-auto
-            flex
-            w-fit
-            max-w-full
-            items-center
-            gap-1.5
-            overflow-x-auto
-            rounded-full
-            px-1
-            py-1.5
-          "
-        >
+        <div className="scrollbar-hide bg-muted mx-auto flex w-fit max-w-full items-center gap-1.5 overflow-x-auto rounded-full px-1 py-1.5">
           {categories.map((category) => (
             <CategoryTab
               key={category.id}
@@ -293,59 +237,16 @@ export default function FAQ2({
               <AccordionItem
                 key={`${activeCategory}-${index}`}
                 value={`${activeCategory}-${index}`}
-                className="
-                  border-border
-                  hover:bg-accent
-                  hover:border-border/80
-                  data-[state=open]:bg-background
-                  overflow-hidden
-                  rounded-xl
-                  border
-                  transition-all
-                  duration-300
-                  ease-in-out
-                  data-[state=open]:shadow-sm
-                "
+                className="border-border hover:bg-accent hover:border-border/80 data-[state=open]:bg-background overflow-hidden rounded-xl border transition-all duration-300 ease-in-out data-[state=open]:shadow-sm"
               >
-                <AccordionTrigger
-                  className="
-                    group
-                    flex
-                    w-full
-                    items-center
-                    justify-between
-                    gap-4
-                    px-5
-                    py-4
-                    text-left
-                    hover:no-underline
-                    data-[state=open]:bg-black
-                  "
-                >
-                  <span
-                    className="
-                      text-muted-foreground
-                      group-hover:text-foreground
-                      text-sm
-                      leading-snug
-                      font-medium
-                      transition-colors
-                      duration-200
-                      md:text-base
-                    "
-                  >
+                <AccordionTrigger className="group flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:no-underline data-[state=open]:bg-black">
+                  <span className="text-muted-foreground group-hover:text-foreground text-sm leading-snug font-medium transition-colors duration-200 md:text-base">
                     {item.question}
                   </span>
                 </AccordionTrigger>
 
                 <AccordionContent className="bg-muted rounded-xl p-5 pt-1">
-                  <p
-                    className="
-                      text-muted-foreground
-                      text-sm
-                      leading-relaxed
-                    "
-                  >
+                  <p className="text-muted-foreground text-sm leading-relaxed">
                     {item.answer}
                   </p>
                 </AccordionContent>
@@ -353,14 +254,7 @@ export default function FAQ2({
             ))}
           </Accordion>
         ) : (
-          <p
-            className="
-              text-muted-foreground
-              py-10
-              text-center
-              text-sm
-            "
-          >
+          <p className="text-muted-foreground py-10 text-center text-sm">
             No questions in this category yet.
           </p>
         )}

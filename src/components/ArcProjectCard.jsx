@@ -14,12 +14,9 @@ export default function ArcProjectCard({
   gap,
   arcDepth,
   onOpen,
-  isExpanded = false,
 }) {
   const step = cardWidth + gap;
-
   const baseX = index * step - containerWidth / 2 + cardWidth / 2;
-
   const cardX = useTransform(trackX, (value) => baseX + value);
 
   const relativeX = useTransform(
@@ -55,22 +52,18 @@ export default function ArcProjectCard({
     [0, 0.5, 0.82, 1, 0.82, 0.5, 0],
   );
 
-  // FIX: raw numbers can't be assigned to CSS `filter` directly — Motion only
-  // special-cases x/y/scale/rotate/opacity inline; filter needs a real string.
   const blurAmount = useTransform(
     arcProgress,
     [-1.7, -1.2, 0, 1.2, 1.7],
     [3, 1, 0, 1, 3],
   );
+
   const blurFilter = useTransform(blurAmount, (value) => `blur(${value}px)`);
 
   const zIndex = useTransform(arcProgress, (value) =>
     Math.round(100 - Math.abs(value) * 20),
   );
 
-  // Unique per rendered instance — project.id repeats 3x (infinite-loop copies),
-  // so layoutId must include `index` or Motion will see duplicate layoutIds
-  // and the shared expand animation breaks/warns.
   const layoutId = `arc-card-${project.id}-${index}`;
 
   return (
@@ -78,7 +71,6 @@ export default function ArcProjectCard({
       project={project}
       onOpen={() => onOpen(project, layoutId)}
       layoutId={layoutId}
-      hidden={isExpanded}
       style={{
         x: cardX,
         y: verticalOffset,

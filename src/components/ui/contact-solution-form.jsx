@@ -23,7 +23,12 @@ import { Badge } from "@/components/ui/badge";
 
 import { Field, FieldLabel, FieldContent } from "@/components/ui/field";
 
-import { FaArrowRight, FaEnvelope, FaRocket, FaWhatsapp } from "react-icons/fa6";
+import {
+  FaArrowRight,
+  FaEnvelope,
+  FaRocket,
+  FaWhatsapp,
+} from "react-icons/fa6";
 
 import { FaPhoneAlt } from "react-icons/fa";
 import Link from "next/link";
@@ -105,7 +110,7 @@ export default function ContactSolutionForm(props = {}) {
   } = useForm({
     defaultValues: {
       fullName: "",
-      phoneNumber:"",
+      phoneNumber: "",
       email: "",
       company: "",
       service: "",
@@ -200,30 +205,9 @@ export default function ContactSolutionForm(props = {}) {
   return (
     <section
       id="contact"
-      className="
-        flex
-        min-h-screen
-        items-center
-        justify-center
-        bg-background
-        px-4
-        py-20
-        sm:px-6
-        lg:px-8
-      "
+      className="flex min-h-screen items-center justify-center bg-background px-4 py-20 sm:px-6 lg:px-8"
     >
-      <div
-        className="
-          grid
-          w-full
-          max-w-6xl
-          grid-cols-1
-          items-center
-          gap-12
-          lg:grid-cols-[0.9fr_1.1fr]
-          lg:gap-20
-        "
-      >
+      <div className="grid w-full max-w-6xl grid-cols-1 items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
         <div className="flex flex-col gap-6">
           {badge && (
             <Badge className="w-fit rounded-full px-3 py-1.5">
@@ -232,31 +216,13 @@ export default function ContactSolutionForm(props = {}) {
             </Badge>
           )}
 
-          <h1
-            className="
-              text-4xl
-              font-extrabold
-              leading-[1.05]
-              tracking-[-0.04em]
-              text-foreground
-              sm:text-5xl
-              lg:text-6xl
-            "
-          >
+          <h1 className="text-4xl font-extrabold leading-[1.05] tracking-[-0.04em] text-foreground sm:text-5xl lg:text-6xl">
             {headline}
 
             <span className="block text-primary">{headlineAccent}</span>
           </h1>
 
-          <p
-            className="
-              max-w-lg
-              text-base
-              leading-7
-              text-muted-foreground
-              sm:text-lg
-            "
-          >
+          <p className="max-w-lg text-base leading-7 text-muted-foreground sm:text-lg">
             {subheadline}
           </p>
 
@@ -265,53 +231,18 @@ export default function ContactSolutionForm(props = {}) {
           <div className="flex flex-col gap-3">
             <Link
               href={`mailto:${contactInfo.email}`}
-              className="
-                group
-                flex
-                items-center
-                gap-3
-                rounded-2xl
-                bg-muted
-                p-1
-                transition-transform
-                duration-200
-                hover:-translate-y-0.5
-              "
+              className="group flex items-center gap-3 rounded-2xl bg-muted p-1 transition-transform duration-200 hover:-translate-y-0.5"
             >
-              <div
-                className="
-                  flex
-                  size-12
-                  shrink-0
-                  items-center
-                  justify-center
-                  rounded-xl
-                  bg-card
-                "
-              >
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-card">
                 <FaEnvelope className="text-sm text-primary" />
               </div>
 
               <div>
-                <p
-                  className="
-                    text-xs
-                    font-medium
-                    uppercase
-                    tracking-wider
-                    text-muted-foreground
-                  "
-                >
+                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   Email
                 </p>
 
-                <p
-                  className="
-                    text-sm
-                    font-semibold
-                    text-foreground
-                  "
-                >
+                <p className="text-sm font-semibold text-foreground">
                   {contactInfo.email}
                 </p>
               </div>
@@ -319,135 +250,49 @@ export default function ContactSolutionForm(props = {}) {
 
             <Link
               href={`tel:${contactInfo.phone}`}
-              className="
-                group
-                flex
-                items-center
-                gap-3
-                rounded-2xl
-                bg-muted
-                p-1
-                transition-transform
-                duration-200
-                hover:-translate-y-0.5
-              "
+              className="group flex items-center gap-3 rounded-2xl bg-muted p-1 transition-transform duration-200 hover:-translate-y-0.5"
             >
-              <div
-                className="
-                  flex
-                  size-12
-                  shrink-0
-                  items-center
-                  justify-center
-                  rounded-xl
-                  bg-card
-                "
-              >
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-card">
                 <FaPhoneAlt className="text-sm text-primary" />
               </div>
 
               <div>
-                <p
-                  className="
-                    text-xs
-                    font-medium
-                    uppercase
-                    tracking-wider
-                    text-muted-foreground
-                  "
-                >
+                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   Phone
                 </p>
 
-                <p
-                  className="
-                    text-sm
-                    font-semibold
-                    text-foreground
-                  "
-                >
+                <p className="text-sm font-semibold text-foreground">
                   {contactInfo.phone}
                 </p>
               </div>
             </Link>
             <Link
               href={`https://wa.me/${contactInfo.whatsapp}`}
-              className="
-                group
-                flex
-                items-center
-                gap-3
-                rounded-2xl
-                bg-muted
-                p-1
-                transition-transform
-                duration-200
-                hover:-translate-y-0.5
-              "
+              className="group flex items-center gap-3 rounded-2xl bg-muted p-1 transition-transform duration-200 hover:-translate-y-0.5"
             >
-              <div
-                className="
-                  flex
-                  size-12
-                  shrink-0
-                  items-center
-                  justify-center
-                  rounded-xl
-                  bg-card
-                "
-              >
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-card">
                 <FaWhatsapp className="text-sm text-primary" />
               </div>
 
               <div>
-                <p
-                  className="
-                    text-xs
-                    font-medium
-                    uppercase
-                    tracking-wider
-                    text-muted-foreground
-                  "
-                >
+                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   WhatsApp
                 </p>
 
-                <p
-                  className="
-                    text-sm
-                    font-semibold
-                    text-foreground
-                  "
-                >
+                <p className="text-sm font-semibold text-foreground">
                   {contactInfo.whatsapp}
                 </p>
               </div>
             </Link>
           </div>
 
-          <div
-            className="
-              mt-3
-              flex
-              items-center
-              gap-2
-              text-xs
-              text-muted-foreground
-            "
-          >
+          <div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
             <span className="size-2 rounded-full bg-primary" />
             Usually respond within 24 hours.
           </div>
         </div>
 
-        <Card
-          className="
-            rounded-[2rem]
-            bg-muted
-            shadow-sm
-            ring-0
-          "
-        >
+        <Card className="rounded-[2rem] bg-muted shadow-sm ring-0">
           <CardContent className="p-6 sm:p-8">
             <form
               onSubmit={handleFormSubmit(onSubmitForm)}
@@ -477,15 +322,7 @@ export default function ContactSolutionForm(props = {}) {
                     {...register("fullName", {
                       required: "Please enter your name.",
                     })}
-                    className="
-                      rounded-xl
-                      border-0
-                      bg-input
-                      text-sm
-                      shadow-[inset_0_1px_0_0_rgba(255,255,255,1)]
-                      focus-visible:ring-1
-                      focus-visible:ring-primary
-                    "
+                    className="rounded-xl border-0 bg-input text-sm shadow-[inset_0_1px_0_0_rgba(255,255,255,1)] focus-visible:ring-1 focus-visible:ring-primary"
                   />
 
                   {errors.fullName && (
@@ -495,7 +332,7 @@ export default function ContactSolutionForm(props = {}) {
                   )}
                 </FieldContent>
               </Field>
-              
+
               <Field>
                 <FieldLabel htmlFor="phoneNumber">Phone Number</FieldLabel>
 
@@ -511,15 +348,7 @@ export default function ContactSolutionForm(props = {}) {
                         message: "Please enter a valid phone number.",
                       },
                     })}
-                    className="
-                      rounded-xl
-                      border-0
-                      bg-input
-                      text-sm
-                      shadow-[inset_0_1px_0_0_rgba(255,255,255,1)]
-                      focus-visible:ring-1
-                      focus-visible:ring-primary
-                    "
+                    className="rounded-xl border-0 bg-input text-sm shadow-[inset_0_1px_0_0_rgba(255,255,255,1)] focus-visible:ring-1 focus-visible:ring-primary"
                   />
 
                   {errors.phoneNumber && (
@@ -545,15 +374,7 @@ export default function ContactSolutionForm(props = {}) {
                         message: "Please enter a valid email.",
                       },
                     })}
-                    className="
-                      rounded-xl
-                      border-0
-                      bg-input
-                      text-sm
-                      shadow-[inset_0_1px_0_0_rgba(255,255,255,1)]
-                      focus-visible:ring-1
-                      focus-visible:ring-primary
-                    "
+                    className="rounded-xl border-0 bg-input text-sm shadow-[inset_0_1px_0_0_rgba(255,255,255,1)] focus-visible:ring-1 focus-visible:ring-primary"
                   />
 
                   {errors.email && (
@@ -574,15 +395,7 @@ export default function ContactSolutionForm(props = {}) {
                     id="company"
                     placeholder="Acme Technologies"
                     {...register("company")}
-                    className="
-                      rounded-xl
-                      border-0
-                      bg-input
-                      text-sm
-                      shadow-[inset_0_1px_0_0_rgba(255,255,255,1)]
-                      focus-visible:ring-1
-                      focus-visible:ring-primary
-                    "
+                    className="rounded-xl border-0 bg-input text-sm shadow-[inset_0_1px_0_0_rgba(255,255,255,1)] focus-visible:ring-1 focus-visible:ring-primary"
                   />
                 </FieldContent>
               </Field>
@@ -606,16 +419,7 @@ export default function ContactSolutionForm(props = {}) {
                       >
                         <SelectTrigger
                           id="service"
-                          className="
-                            rounded-xl
-                            border-0
-                            bg-input
-                            text-sm
-                            text-muted-foreground
-                            shadow-[inset_0_1px_0_0_rgba(255,255,255,1)]
-                            focus:ring-1
-                            focus:ring-primary
-                          "
+                          className="rounded-xl border-0 bg-input text-sm text-muted-foreground shadow-[inset_0_1px_0_0_rgba(255,255,255,1)] focus:ring-1 focus:ring-primary"
                         >
                           <SelectValue placeholder="Choose what you need..." />
                         </SelectTrigger>
@@ -656,16 +460,7 @@ export default function ContactSolutionForm(props = {}) {
                     {...register("message", {
                       required: "Tell us a little about your project.",
                     })}
-                    className="
-                      resize-none
-                      rounded-xl
-                      border-0
-                      bg-input
-                      text-sm
-                      shadow-[inset_0_1px_0_0_rgba(255,255,255,1)]
-                      focus-visible:ring-1
-                      focus-visible:ring-primary
-                    "
+                    className="resize-none rounded-xl border-0 bg-input text-sm shadow-[inset_0_1px_0_0_rgba(255,255,255,1)] focus-visible:ring-1 focus-visible:ring-primary"
                   />
 
                   {errors.message && (
@@ -679,45 +474,16 @@ export default function ContactSolutionForm(props = {}) {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="
-                  group
-                  mt-1
-                  w-full
-                  rounded-xl
-                  bg-primary
-                  py-5
-                  text-sm
-                  font-semibold
-                  text-primary-foreground
-                  shadow-[inset_0_2px_0_0_rgba(255,255,255,0.5),inset_0_-2px_0_0_rgba(0,0,0,0.2)]
-                  transition-all
-                  hover:bg-primary/90
-                  disabled:pointer-events-none
-                  disabled:opacity-60
-                "
+                className="group mt-1 w-full rounded-xl bg-primary py-5 text-sm font-semibold text-primary-foreground shadow-[inset_0_2px_0_0_rgba(255,255,255,0.5),inset_0_-2px_0_0_rgba(0,0,0,0.2)] transition-all hover:bg-primary/90 disabled:pointer-events-none disabled:opacity-60"
               >
                 {isSubmitting ? "Sending..." : ctaLabel}
 
                 {!isSubmitting && (
-                  <FaArrowRight
-                    className="
-                      ml-2
-                      text-xs
-                      transition-transform
-                      group-hover:translate-x-1
-                    "
-                  />
+                  <FaArrowRight className="ml-2 text-xs transition-transform group-hover:translate-x-1" />
                 )}
               </Button>
 
-              <p
-                className="
-                  text-center
-                  text-[11px]
-                  leading-5
-                  text-muted-foreground
-                "
-              >
+              <p className="text-center text-[11px] leading-5 text-muted-foreground">
                 No commitment required. We'll review your project and get back
                 to you with the next steps.
               </p>

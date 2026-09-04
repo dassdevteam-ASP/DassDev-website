@@ -192,30 +192,11 @@ export default function WhyDassDev() {
                     delay: index * 0.06,
                     ease: [0.22, 1, 0.36, 1],
                   }}
-                  className="
-                    overflow-hidden
-                    rounded-2xl
-                    border
-                    border-border
-                    bg-card
-                    transition-colors
-                    duration-300
-                    hover:border-primary/30
-                  "
+                  className="overflow-hidden rounded-2xl border border-border bg-card transition-colors duration-300 hover:border-primary/30"
                 >
                   {/* TITLE */}
 
-                  <div
-                    className="
-                      flex
-                      items-center
-                      gap-3
-                      border-b
-                      border-border
-                      px-5
-                      py-4
-                    "
-                  >
+                  <div className="flex items-center gap-3 border-b border-border px-5 py-4">
                     <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted text-primary">
                       <Icon className="size-4" />
                     </div>
@@ -230,19 +211,7 @@ export default function WhyDassDev() {
                   <div className="grid sm:grid-cols-2">
                     {/* TYPICAL */}
 
-                    <div
-                      className="
-                        flex
-                        gap-3
-                        border-b
-                        border-border
-                        px-5
-                        py-5
-                        sm:border-b-0
-                        sm:border-r
-                        sm:py-6
-                      "
-                    >
+                    <div className="flex gap-3 border-b border-border px-5 py-5 sm:border-b-0 sm:border-r sm:py-6">
                       <X className="mt-0.5 size-4 shrink-0 text-muted-foreground/60" />
 
                       <p className="text-sm leading-relaxed text-muted-foreground">
@@ -283,22 +252,7 @@ export default function WhyDassDev() {
                 duration: 0.45,
                 delay: 0.15,
               }}
-              className="
-                group
-                mt-6
-                flex
-                flex-col
-                gap-4
-                rounded-2xl
-                border
-                border-primary/20
-                bg-primary/[0.04]
-                p-5
-                sm:flex-row
-                sm:items-center
-                sm:justify-between
-                sm:p-6
-              "
+              className="group mt-6 flex flex-col gap-4 rounded-2xl border border-primary/20 bg-primary/[0.04] p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6"
             >
               <div>
                 <p className="text-sm font-semibold text-foreground">
@@ -312,27 +266,10 @@ export default function WhyDassDev() {
 
               <a
                 href="#contact"
-                className="
-                  inline-flex
-                  shrink-0
-                  items-center
-                  gap-2
-                  text-sm
-                  font-semibold
-                  text-primary
-                  transition-colors
-                  hover:text-primary/80
-                "
+                className="inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
               >
                 Let's talk
-                <ArrowRight
-                  className="
-                    size-4
-                    transition-transform
-                    duration-300
-                    group-hover:translate-x-1
-                  "
-                />
+                <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
             </motion.div>
           </div>

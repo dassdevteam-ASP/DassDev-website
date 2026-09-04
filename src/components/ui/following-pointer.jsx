@@ -43,9 +43,7 @@ export default function CustomCursor() {
 
       if (
         target instanceof Element &&
-        target.closest(
-          "a, button, input, textarea, select, [role='button']"
-        )
+        target.closest("a, button, input, textarea, select, [role='button']")
       ) {
         setHovering(true);
       }
@@ -56,9 +54,7 @@ export default function CustomCursor() {
 
       if (
         target instanceof Element &&
-        target.closest(
-          "a, button, input, textarea, select, [role='button']"
-        )
+        target.closest("a, button, input, textarea, select, [role='button']")
       ) {
         setHovering(false);
       }
@@ -67,61 +63,32 @@ export default function CustomCursor() {
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseenter", handleMouseEnter);
 
-    document.documentElement.addEventListener(
-      "mouseleave",
-      handleMouseLeave
-    );
+    document.documentElement.addEventListener("mouseleave", handleMouseLeave);
 
-    document.addEventListener(
-      "mouseover",
-      handlePointerOver
-    );
+    document.addEventListener("mouseover", handlePointerOver);
 
-    document.addEventListener(
-      "mouseout",
-      handlePointerOut
-    );
+    document.addEventListener("mouseout", handlePointerOut);
 
     return () => {
-      window.removeEventListener(
-        "mousemove",
-        handleMouseMove
-      );
+      window.removeEventListener("mousemove", handleMouseMove);
 
-      window.removeEventListener(
-        "mouseenter",
-        handleMouseEnter
-      );
+      window.removeEventListener("mouseenter", handleMouseEnter);
 
       document.documentElement.removeEventListener(
         "mouseleave",
-        handleMouseLeave
+        handleMouseLeave,
       );
 
-      document.removeEventListener(
-        "mouseover",
-        handlePointerOver
-      );
+      document.removeEventListener("mouseover", handlePointerOver);
 
-      document.removeEventListener(
-        "mouseout",
-        handlePointerOut
-      );
+      document.removeEventListener("mouseout", handlePointerOut);
     };
   }, [mouseX, mouseY]);
 
   return (
     <motion.div
       aria-hidden="true"
-      className="
-        pointer-events-none
-        fixed
-        left-0
-        top-0
-        z-[9999]
-        hidden
-        md:block
-      "
+      className="pointer-events-none fixed left-0 top-0 z-9999 hidden md:block"
       style={{
         x,
         y,
@@ -137,25 +104,10 @@ export default function CustomCursor() {
         ease: "easeOut",
       }}
     >
-      <div
-        className="
-          relative
-          -translate-x-1/2
-          -translate-y-1/2
-        "
-      >
+      <div className="relative -translate-x-1/2 -translate-y-1/2">
         {/* Outer magnetic ring */}
         <motion.div
-          className="
-            absolute
-            left-1/2
-            top-1/2
-            -translate-x-1/2
-            -translate-y-1/2
-            rounded-full
-            border
-            border-foreground/30
-          "
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-foreground/30"
           animate={{
             width: hovering ? 52 : 34,
             height: hovering ? 52 : 34,
@@ -172,13 +124,7 @@ export default function CustomCursor() {
 
         {/* Inner cursor */}
         <motion.div
-          className="
-            relative
-            size-2.5
-            rounded-full
-            bg-foreground
-            shadow-[0_0_12px_rgba(255,255,255,0.35)]
-          "
+          className="relative size-2.5 rounded-full bg-foreground shadow-[0_0_12px_rgba(255,255,255,0.35)]"
           animate={{
             scale: hovering ? 1.35 : 1,
           }}
@@ -191,16 +137,7 @@ export default function CustomCursor() {
 
         {/* Small accent dot */}
         <motion.div
-          className="
-            absolute
-            left-1/2
-            top-1/2
-            size-1
-            -translate-x-1/2
-            -translate-y-1/2
-            rounded-full
-            bg-background
-          "
+          className="absolute left-1/2 top-1/2 size-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-background"
           animate={{
             scale: hovering ? 1 : 0,
             opacity: hovering ? 1 : 0,

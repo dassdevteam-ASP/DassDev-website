@@ -94,7 +94,7 @@ const defaultLegalLinks = [
 
 const defaultSocials = [
   { label: "Youtube", href: "https://youtube.com/@DassDevtech", icon: "youtube" },
-  { label: "Github", href: "https://github.com/dassdevteam-ASP", icon: "github" },
+  { label: "Github", href: "https://github.com/DassDev", icon: "github" },
   { label: "Instagram", href: "https://www.instagram.com/dassdev.in", icon: "instagram" },
 ];
 
