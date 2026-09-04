@@ -1,32 +1,170 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-
-import { animate, useMotionValue } from "motion/react";
-
+import { animate, motion, useMotionValue, useTransform } from "motion/react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-import ArcProjectCard from "./ArcProjectCard";
-
-import { ProjectDetails } from "./ProjectCard";
-
+import ProjectDetails from "./ProjectDetails";
 import { projects } from "./projects-data";
 
 function getDimensions(width) {
   if (width < 640) {
-    return { cardWidth: 220, cardHeight: 300, gap: 18, arcDepth: 145 };
+    return {
+      cardWidth: 220,
+      cardHeight: 300,
+      gap: 18,
+      arcDepth: 145,
+    };
   }
+
   if (width < 1024) {
-    return { cardWidth: 270, cardHeight: 365, gap: 24, arcDepth: 190 };
+    return {
+      cardWidth: 270,
+      cardHeight: 365,
+      gap: 24,
+      arcDepth: 190,
+    };
   }
-  return { cardWidth: 310, cardHeight: 420, gap: 34, arcDepth: 250 };
+
+  return {
+    cardWidth: 310,
+    cardHeight: 420,
+    gap: 34,
+    arcDepth: 250,
+  };
+}
+
+function ArcCard({
+  project,
+  index,
+  trackX,
+  containerWidth,
+  cardWidth,
+  cardHeight,
+  gap,
+  arcDepth,
+  onClick,
+}) {
+  const step = cardWidth + gap;
+
+  const baseX = index * step;
+
+  const x = useTransform(trackX, (value) => baseX + value);
+
+  const relativeX = useTransform(
+    x,
+    (value) => value + cardWidth / 2 - containerWidth / 2,
+  );
+
+  const arcProgress = useTransform(relativeX, (value) => {
+    if (!containerWidth) return 0;
+
+    const normalized = value / (containerWidth * 0.65);
+
+    return Math.max(-1, Math.min(1, normalized));
+  });
+
+  const y = useTransform(
+    arcProgress,
+    (value) => Math.pow(Math.abs(value), 2) * arcDepth,
+  );
+
+  const rotate = useTransform(
+    arcProgress,
+    [-1, -0.5, 0, 0.5, 1],
+    [-22, -10, 0, 10, 22],
+  );
+
+  const scale = useTransform(
+    arcProgress,
+    [-1, -0.5, 0, 0.5, 1],
+    [0.82, 0.94, 1, 0.94, 0.82],
+  );
+
+  const opacity = useTransform(
+    arcProgress,
+    [-1, -0.85, -0.5, 0, 0.5, 0.85, 1],
+    [0, 0.45, 0.85, 1, 0.85, 0.45, 0],
+  );
+
+  const blur = useTransform(
+    arcProgress,
+    [-1, -0.7, 0, 0.7, 1],
+    [3, 1, 0, 1, 3],
+  );
+
+  const filter = useTransform(
+    blur,
+    (value) => `blur(${value}px)`,
+  );
+
+  const zIndex = useTransform(
+    arcProgress,
+    (value) => Math.round(100 - Math.abs(value) * 50),
+  );
+
+  return (
+    <motion.button
+      type="button"
+      onClick={() => onClick(project)}
+      style={{
+        x,
+        y,
+        rotate,
+        scale,
+        opacity,
+        filter,
+        width: cardWidth,
+        height: cardHeight,
+        zIndex,
+      }}
+      whileHover={{ scale: 1.04 }}
+      whileTap={{ scale: 0.98 }}
+      className="group absolute left-0 top-0 origin-bottom overflow-hidden rounded-3xl bg-neutral-100 text-left shadow-[0_30px_90px_rgba(0,0,0,0.16)]"
+    >
+      <img
+        src={project.image}
+        alt={project.title}
+        draggable="false"
+        className="h-full w-full select-none object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
+        width={400}
+        height={400}
+      />
+
+      <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent" />
+
+      <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <span className="rounded-full border border-white/20 bg-black/20 px-2.5 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-white/85 backdrop-blur-md sm:text-[10px]">
+            {project.category}
+          </span>
+
+          <span className="text-[10px] font-medium tracking-widest text-white/50">
+            {project.id}
+          </span>
+        </div>
+
+        <h3 className="max-w-[92%] text-xl font-semibold leading-tight tracking-tight text-white sm:text-2xl">
+          {project.title}
+        </h3>
+
+        <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-white/65 sm:text-sm">
+          {project.shortDescription}
+        </p>
+
+        <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-white transition-all duration-200 group-hover:gap-2">
+          Explore project
+          <ArrowRight className="size-3.5" />
+        </div>
+      </div>
+    </motion.button>
+  );
 }
 
 export default function ArcProjectCarousel() {
   const containerRef = useRef(null);
 
   const [containerWidth, setContainerWidth] = useState(0);
-
   const [dimensions, setDimensions] = useState({
     cardWidth: 310,
     cardHeight: 420,
@@ -35,15 +173,9 @@ export default function ArcProjectCarousel() {
   });
 
   const [activeIndex, setActiveIndex] = useState(0);
-
-  // NEW: track both the project data AND the unique layoutId of the
-  // specific card instance that was clicked (there are 3 duplicates
-  // of each project on screen at once, so project.id alone isn't unique).
   const [selectedProject, setSelectedProject] = useState(null);
-  const [selectedLayoutId, setSelectedLayoutId] = useState(null);
 
   const isDragging = useRef(false);
-  const didDrag = useRef(false);
   const lastPointerX = useRef(0);
 
   const trackX = useMotionValue(0);
@@ -57,15 +189,17 @@ export default function ArcProjectCarousel() {
 
   const step = dimensions.cardWidth + dimensions.gap;
   const copyWidth = totalProjects * step;
-  const middleCopyOffset = -copyWidth;
 
   useEffect(() => {
     const element = containerRef.current;
+
     if (!element) return;
 
     const updateSize = () => {
       const width = element.offsetWidth;
+
       if (!width) return;
+
       setContainerWidth(width);
       setDimensions(getDimensions(width));
     };
@@ -73,6 +207,7 @@ export default function ArcProjectCarousel() {
     updateSize();
 
     const observer = new ResizeObserver(updateSize);
+
     observer.observe(element);
 
     return () => observer.disconnect();
@@ -80,58 +215,55 @@ export default function ArcProjectCarousel() {
 
   useEffect(() => {
     if (!containerWidth) return;
-    const centerOffset = containerWidth / 2 - dimensions.cardWidth / 2;
-    trackX.set(middleCopyOffset + centerOffset);
-  }, [containerWidth, dimensions.cardWidth, middleCopyOffset, trackX]);
+
+    const centerOffset =
+      containerWidth / 2 - dimensions.cardWidth / 2;
+
+    trackX.set(-copyWidth + centerOffset);
+  }, [
+    containerWidth,
+    dimensions.cardWidth,
+    copyWidth,
+    trackX,
+  ]);
 
   const normalizeTrack = (value) => {
-    let nextValue = value;
-    const upperBoundary = middleCopyOffset + copyWidth;
-    const lowerBoundary = middleCopyOffset - copyWidth;
+    let result = value;
 
-    if (nextValue > upperBoundary) nextValue -= copyWidth;
-    if (nextValue < lowerBoundary) nextValue += copyWidth;
+    while (result > 0) {
+      result -= copyWidth;
+    }
 
-    return nextValue;
+    while (result < -copyWidth * 2) {
+      result += copyWidth;
+    }
+
+    return result;
   };
 
-  const getGlobalIndex = () => {
+  const getCurrentIndex = () => {
     if (!containerWidth) return 0;
-    const centerOffset = containerWidth / 2 - dimensions.cardWidth / 2;
-    const current = trackX.get();
-    return Math.round(-(current - middleCopyOffset - centerOffset) / step);
+
+    const centerOffset =
+      containerWidth / 2 - dimensions.cardWidth / 2;
+
+    return Math.round(
+      -(trackX.get() + copyWidth - centerOffset) / step,
+    );
   };
 
-  const getProjectIndex = (globalIndex) => {
-    return ((globalIndex % totalProjects) + totalProjects) % totalProjects;
-  };
-
-  const settleToNearestCard = (velocity = 0) => {
+  const settle = () => {
     if (!containerWidth) return;
 
-    const centerOffset = containerWidth / 2 - dimensions.cardWidth / 2;
-    const globalIndex = getGlobalIndex();
-    const target = middleCopyOffset + centerOffset - globalIndex * step;
-    const normalizedTarget = normalizeTrack(target);
+    const centerOffset =
+      containerWidth / 2 - dimensions.cardWidth / 2;
 
-    animate(trackX, normalizedTarget, {
-      type: "spring",
-      stiffness: 280,
-      damping: 32,
-      mass: 0.65,
-      velocity: velocity * 0.08,
-    });
+    const index = getCurrentIndex();
 
-    setActiveIndex(getProjectIndex(globalIndex));
-  };
-
-  const moveToProject = (direction) => {
-    if (!containerWidth) return;
-
-    const currentGlobalIndex = getGlobalIndex();
-    const targetGlobalIndex = currentGlobalIndex + direction;
-    const centerOffset = containerWidth / 2 - dimensions.cardWidth / 2;
-    const target = middleCopyOffset + centerOffset - targetGlobalIndex * step;
+    const target =
+      -copyWidth +
+      centerOffset -
+      index * step;
 
     animate(trackX, normalizeTrack(target), {
       type: "spring",
@@ -140,68 +272,103 @@ export default function ArcProjectCarousel() {
       mass: 0.65,
     });
 
-    setActiveIndex(getProjectIndex(targetGlobalIndex));
+    setActiveIndex(
+      ((index % totalProjects) + totalProjects) %
+        totalProjects,
+    );
+  };
+
+  const moveToProject = (direction) => {
+    if (!containerWidth) return;
+
+    const currentIndex = getCurrentIndex();
+    const nextIndex = currentIndex + direction;
+
+    const centerOffset =
+      containerWidth / 2 - dimensions.cardWidth / 2;
+
+    const target =
+      -copyWidth +
+      centerOffset -
+      nextIndex * step;
+
+    animate(trackX, normalizeTrack(target), {
+      type: "spring",
+      stiffness: 280,
+      damping: 32,
+      mass: 0.65,
+    });
+
+    setActiveIndex(
+      ((nextIndex % totalProjects) + totalProjects) %
+        totalProjects,
+    );
   };
 
   const handlePointerDown = (event) => {
     if (selectedProject) return;
 
+    /*
+     * IMPORTANT:
+     * If the pointer started on a card, do not start
+     * carousel dragging. This allows the card's onClick
+     * to work normally.
+     */
+    if (event.target.closest("button")) {
+      return;
+    }
+
     isDragging.current = true;
-    didDrag.current = false;
     lastPointerX.current = event.clientX;
 
     trackX.stop();
-    event.currentTarget.setPointerCapture(event.pointerId);
+
+    event.currentTarget.setPointerCapture(
+      event.pointerId,
+    );
   };
 
   const handlePointerMove = (event) => {
     if (!isDragging.current) return;
 
-    const delta = event.clientX - lastPointerX.current;
-    if (Math.abs(delta) > 3) {
-      didDrag.current = true;
-    }
+    const delta =
+      event.clientX - lastPointerX.current;
 
     lastPointerX.current = event.clientX;
 
-    const nextValue = trackX.get() + delta;
-    trackX.set(normalizeTrack(nextValue));
+    trackX.set(
+      normalizeTrack(trackX.get() + delta),
+    );
   };
 
   const handlePointerUp = (event) => {
     if (!isDragging.current) return;
 
     isDragging.current = false;
-    settleToNearestCard();
+
+    settle();
 
     try {
-      event.currentTarget.releasePointerCapture(event.pointerId);
+      event.currentTarget.releasePointerCapture(
+        event.pointerId,
+      );
     } catch {}
-
-    if (didDrag.current) {
-      window.setTimeout(() => {
-        didDrag.current = false;
-      }, 100);
-    }
   };
 
   const handlePointerCancel = () => {
     if (!isDragging.current) return;
+
     isDragging.current = false;
-    settleToNearestCard();
+
+    settle();
   };
 
-  // NEW: now receives the unique per-instance layoutId from ArcProjectCard
-  const handleOpenProject = (project, layoutId) => {
-    if (didDrag.current) return;
-    console.log("opening");
+  const handleCardClick = (project) => {
     setSelectedProject(project);
-    setSelectedLayoutId(layoutId);
   };
 
-  const handleCloseProject = () => {
+  const closeProject = () => {
     setSelectedProject(null);
-    setSelectedLayoutId(null);
   };
 
   return (
@@ -219,12 +386,15 @@ export default function ArcProjectCarousel() {
             <h2 className="text-4xl font-bold leading-[0.95] tracking-tighter text-foreground sm:text-5xl md:text-6xl">
               Built to make
               <br />
-              <span className="text-muted-foreground">an impression.</span>
+              <span className="text-muted-foreground">
+                an impression.
+              </span>
             </h2>
 
             <p className="mx-auto mt-6 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base sm:leading-7">
-              Explore the digital experiences we design, build and maintain for
-              businesses, startups and growing teams.
+              Explore the digital experiences we design,
+              build and maintain for businesses, startups
+              and growing teams.
             </p>
           </div>
         </div>
@@ -240,7 +410,7 @@ export default function ArcProjectCarousel() {
         >
           <div className="absolute left-0 top-0 h-full w-full">
             {repeatedProjects.map((project, index) => (
-              <ArcProjectCard
+              <ArcCard
                 key={`${project.id}-${index}`}
                 project={project}
                 index={index}
@@ -250,20 +420,15 @@ export default function ArcProjectCarousel() {
                 cardHeight={dimensions.cardHeight}
                 gap={dimensions.gap}
                 arcDepth={dimensions.arcDepth}
-                copyWidth={copyWidth}
-                middleCopyOffset={middleCopyOffset}
-                onOpen={handleOpenProject}
-                // hide the exact instance currently expanded into the modal,
-                // so the shared layoutId only has one visible occupant
-                isExpanded={
-                  selectedLayoutId === `arc-card-${project.id}-${index}`
-                }
+                onClick={handleCardClick}
               />
             ))}
           </div>
 
           <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-36 bg-linear-to-t from-background via-background/70 to-transparent" />
+
           <div className="pointer-events-none absolute inset-y-0 left-0 z-30 w-14 bg-linear-to-r from-background to-transparent sm:w-24 md:w-40" />
+
           <div className="pointer-events-none absolute inset-y-0 right-0 z-30 w-14 bg-linear-to-l from-background to-transparent sm:w-24 md:w-40" />
         </div>
 
@@ -305,10 +470,10 @@ export default function ArcProjectCarousel() {
 
       <ProjectDetails
         project={selectedProject}
-        open={Boolean(selectedProject)}
-        onClose={handleCloseProject}
-        layoutId={selectedLayoutId}
+        open={selectedProject !== null}
+        onClose={closeProject}
       />
     </>
   );
 }
+

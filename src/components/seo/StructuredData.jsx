@@ -36,7 +36,7 @@ export default function StructuredData() {
         },
 
         sameAs: [
-          "https://github.com/dassdevteam-ASP",
+          "https://github.com/DassDev",
           "https://www.instagram.com/dassdev.in",
           "https://www.youtube.com/@DassDevtech",
         ],

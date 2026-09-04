@@ -408,50 +408,28 @@ function AIVisual({ hovered }) {
         className="absolute inset-0 h-full w-full"
         viewBox="0 0 500 200"
         fill="none"
+        aria-hidden="true"
       >
-        <motion.path
+        <path
           d="M50 100 C120 100 120 55 170 55 C220 55 220 100 270 100 C320 100 320 100 340 100 C390 100 390 100 450 100"
           stroke="currentColor"
-          className="text-border"
+          className={cn(
+            "text-border",
+            hovered && "animate-[dash-flow_1.5s_linear_infinite]",
+          )}
           strokeWidth="1.5"
           strokeDasharray="5 5"
-          animate={
-            hovered
-              ? {
-                  strokeDashoffset: [0, -40],
-                }
-              : {
-                  strokeDashoffset: 0,
-                }
-          }
-          transition={{
-            duration: 1.5,
-            repeat: hovered ? Infinity : 0,
-            ease: "linear",
-          }}
         />
 
-        <motion.path
+        <path
           d="M50 100 C120 100 120 145 170 145 C220 145 220 100 270 100"
           stroke="currentColor"
-          className="text-border"
+          className={cn(
+            "text-border",
+            hovered && "animate-[dash-flow_1.5s_linear_infinite]",
+          )}
           strokeWidth="1.5"
           strokeDasharray="5 5"
-          animate={
-            hovered
-              ? {
-                  strokeDashoffset: [0, -40],
-                }
-              : {
-                  strokeDashoffset: 0,
-                }
-          }
-          transition={{
-            duration: 1.5,
-            repeat: hovered ? Infinity : 0,
-            ease: "linear",
-            delay: 0.3,
-          }}
         />
       </svg>
 

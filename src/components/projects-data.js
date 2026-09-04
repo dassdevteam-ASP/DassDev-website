@@ -1,241 +1,184 @@
 export const projects = [
   {
     id: "01",
-    title: "VIIC Innovation Platform",
+
+    title: "Yukti Innovation & Incubation Platform",
+    url: "https://viba-incubation.vercel.app",
+
     category: "Web Application",
+
     shortDescription:
-      "A scalable digital platform connecting students, startups, mentors and innovation programs.",
-    image:
-      "https://images.unsplash.com/photo-1558655146-9f40138edfeb?q=80&w=1600&auto=format&fit=crop",
+      "A production-ready college innovation and incubation platform connecting students, faculty, evaluators and administrators through a structured digital workflow.",
+
+    image: "/projects/viba-project.png",
 
     clientIdea:
-      "The client wanted a single digital platform where students could discover innovation programs, submit ideas, connect with mentors and track their journey.",
+      "The client wanted a centralized digital platform for managing the complete innovation and incubation journey inside a college ecosystem — from student registration and idea submission to evaluation, decision-making, team collaboration and incubation.",
 
     problem: [
-      "Information was scattered across different channels.",
-      "Students had no clear journey from idea submission to incubation.",
-      "Administrators needed a better way to manage submissions and users.",
+      "Innovation program information and activities were difficult to manage through disconnected systems and communication channels.",
+
+      "Students needed a structured journey from registration and idea submission through evaluation and final decisions.",
+
+      "Administrators needed centralized control over students, submissions, screening, evaluations and decisions.",
+
+      "Evaluators and faculty required role-specific access to the submissions and workflows relevant to them.",
+
+      "The platform needed to handle authentication, file uploads, workflow states, permissions and business data reliably at scale.",
     ],
 
     solution:
-      "We designed and developed a centralized platform that brings students, administrators, mentors and innovation programs into one structured ecosystem.",
+      "We designed and developed a role-based innovation and incubation platform that centralizes student submissions, team collaboration, screening, evaluation, decision-making and incubation workflows into one structured ecosystem.",
 
     approach: [
-      "Started by understanding the different user journeys.",
-      "Designed the information architecture around those journeys.",
-      "Built reusable frontend components for consistent UX.",
-      "Created a scalable backend architecture for future modules.",
-      "Optimized the application for responsive usage across devices.",
+      "Started by mapping the complete journeys of students, faculty, evaluators and administrators.",
+
+      "Designed the application around clearly separated business domains such as authentication, profiles, submissions, teams, dashboard, screening, evaluation and decisions.",
+
+      "Implemented a role-based authentication system with registration, admin approval, account activation, login, refresh-token sessions and password recovery.",
+
+      "Built the student submission workflow around drafts, submission, screening, requested changes, resubmission and final decisions.",
+
+      "Designed the submission architecture so common submission data remains separate from type-specific idea, prototype and startup information.",
+
+      "Implemented team collaboration with invitations, accepted members and action-level authorization.",
+
+      "Created a storage abstraction supporting local, Cloudinary and S3 providers instead of coupling the application to a single storage service.",
+
+      "Built the frontend using reusable components, React Hook Form and TanStack Query while keeping API communication behind dedicated services.",
+
+      "Structured the backend using Route → Middleware → Controller → Service → Repository layers to keep business logic maintainable and scalable.",
+
+      "Designed activity and audit history so important workflow actions can be tracked throughout the innovation lifecycle.",
     ],
 
     outcome:
-      "The result is a structured digital platform that makes innovation programs easier to discover, manage and participate in.",
+      "The result is a structured digital foundation for managing the college innovation lifecycle, giving students a clear submission journey while providing administrators, faculty and evaluators with role-specific workflows and centralized control.",
 
     technologies: [
-      "React",
       "Next.js",
+      "React",
+      "Tailwind CSS",
+      "shadcn/ui",
+      "TanStack Query",
+      "React Hook Form",
+      "Axios",
       "Node.js",
+      "Express.js",
       "MongoDB",
+      "Mongoose",
+      "JWT",
+      "Joi",
+      "Multer",
+      "Cloudinary",
+      "AWS S3",
     ],
   },
 
   {
     id: "02",
-    title: "Startup Landing Experience",
-    category: "Landing Page",
+    title: "Tekytalk",
+    category: "AI SaaS · EdTech",
     shortDescription:
-      "A conversion-focused landing experience designed to communicate a startup's value clearly.",
-    image:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1600&auto=format&fit=crop",
+      "An AI-powered teaching platform where users create personalized AI tutors and learn through real-time voice conversations.",
+    url: "https://ai-saas-sand-one.vercel.app/",
+    image: "/projects/tekytalk.png",
 
     clientIdea:
-      "The client had a strong product idea but needed a website that could explain the product quickly and make visitors understand why it mattered.",
+      "Create a personalized learning platform where students can build AI teaching companions tailored to their subjects, learning preferences and session duration, then interact with them through natural voice conversations.",
 
     problem: [
-      "The original website lacked a clear visual hierarchy.",
-      "Visitors had difficulty understanding the product.",
-      "Important conversion actions were buried inside the page.",
+      "Traditional learning platforms often provide static content without adapting to the learner's preferred style.",
+      "Students may struggle to get personalized explanations and interactive guidance whenever they need it.",
+      "Voice-based learning experiences require multiple AI services to work together reliably in real time.",
+      "Managing personalized tutors, learning sessions, user access and subscription limits adds significant application complexity.",
     ],
 
     solution:
-      "We redesigned the experience around a clear storytelling structure that takes visitors from the problem to the solution and finally to the call to action.",
+      "Built Tekytalk as a full-stack AI SaaS platform that allows users to create personalized AI teaching companions and interact with them through real-time voice sessions. The platform combines authentication, database management, AI tutoring, speech recognition, voice synthesis, subscription controls and learning history into one application.",
 
     approach: [
-      "Defined the primary conversion goal.",
-      "Restructured the content hierarchy.",
-      "Created a stronger hero section.",
-      "Designed supporting sections around user objections.",
-      "Added responsive layouts for mobile and desktop.",
+      "Designed a companion builder where users configure the subject, topic, learning style, voice preference and session duration.",
+      "Integrated VAPI AI to orchestrate real-time voice conversations between users and their AI companions.",
+      "Connected Deepgram for speech-to-text transcription, OpenAI GPT-4 for intelligent tutoring responses and ElevenLabs for speech synthesis.",
+      "Implemented Clerk authentication and subscription-based access control.",
+      "Used Supabase/PostgreSQL for application data and learning history.",
+      "Built companion browsing, search and subject filtering functionality.",
+      "Implemented a My Journey dashboard for tracking created companions, completed sessions and learning activity.",
+      "Added Sentry for application monitoring, error tracking and performance tracing.",
     ],
 
     outcome:
-      "The new experience communicates the product more clearly and gives visitors a much more direct path toward taking action.",
+      "Delivered a complete AI-powered learning SaaS experience where users can create personalized tutors, start real-time voice learning sessions and track their learning journey from a unified platform.",
 
     technologies: [
-      "React",
       "Next.js",
+      "React",
+      "TypeScript",
       "Tailwind CSS",
-      "Framer Motion",
+      "shadcn/ui",
+      "VAPI AI",
+      "Deepgram",
+      "ElevenLabs",
+      "OpenAI GPT-4",
+      "Clerk",
+      "Supabase",
+      "Sentry",
+      "Lottie",
     ],
   },
 
   {
     id: "03",
-    title: "Business Growth Website",
-    category: "Business Website",
+    title: "AK Meet",
+    category: "Full-Stack · Video Conferencing",
     shortDescription:
-      "A modern business website combining strong visual identity, responsive UX and maintainable architecture.",
-    image:
-      "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1600&auto=format&fit=crop",
+      "A full-stack video conferencing platform with real-time video calls, meeting chat, authentication and meeting history.",
+    url: "https://ak-meet.vercel.app",
+    image: "/projects/ak-meet.png",
 
     clientIdea:
-      "The client wanted their online presence to feel as professional as the business itself and generate more meaningful enquiries.",
+      "Build a professional video conferencing platform inspired by the core experience of Zoom, allowing users to join meetings, communicate through video and audio, chat in real time and keep track of previous meetings.",
 
     problem: [
-      "The existing website did not communicate the quality of the business.",
-      "Services were difficult to understand.",
-      "The mobile experience needed improvement.",
+      "Video conferencing requires reliable real-time communication between multiple participants.",
+      "Users need more than video calls, including authentication, meeting rooms, chat and meeting history.",
+      "Peer-to-peer communication requires a signaling layer to establish and coordinate WebRTC connections.",
+      "The application needs a responsive interface that remains usable across different screen sizes.",
     ],
 
     solution:
-      "We created a modern website that combines visual storytelling with a clear service structure and strong conversion points.",
+      "Built AK Meet as a full-stack video conferencing application using the MERN stack and WebRTC. Socket.io handles real-time signaling and chat while MongoDB stores application data such as users and meetings. The platform combines authentication, video communication, meeting rooms, chat and meeting history into one application.",
 
     approach: [
-      "Studied the business positioning.",
-      "Mapped services into a simple information architecture.",
-      "Created a visual design system.",
-      "Developed responsive reusable components.",
-      "Optimized performance and accessibility.",
+      "Built the frontend using React with Material UI for a responsive conferencing interface.",
+      "Implemented WebRTC-based real-time audio and video communication.",
+      "Used Socket.io as the real-time signaling layer for peer-to-peer WebRTC communication.",
+      "Implemented real-time meeting chat using Socket.io events.",
+      "Built user signup and login functionality with token-based authentication structure.",
+      "Created MongoDB models for users and meetings using Mongoose.",
+      "Separated the backend and frontend into distinct application layers within a monorepo-style structure.",
+      "Implemented meeting history to track previous meetings and participation.",
+      "Used React Context API for managing authentication state across the frontend.",
+      "Used Axios for communication between the React frontend and Express backend.",
     ],
 
     outcome:
-      "The business now has a digital presence that better represents its positioning and gives potential customers a clearer understanding of its services.",
-
-    technologies: [
-      "Next.js",
-      "React",
-      "Tailwind CSS",
-      "Node.js",
-    ],
-  },
-
-  {
-    id: "04",
-    title: "E-commerce Experience",
-    category: "E-commerce",
-    shortDescription:
-      "A polished shopping experience focused on product discovery, trust and frictionless purchasing.",
-    image:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=1600&auto=format&fit=crop",
-
-    clientIdea:
-      "The client wanted to sell products online while making the buying experience simple enough for first-time customers.",
-
-    problem: [
-      "Products were difficult to discover.",
-      "The purchasing journey contained unnecessary friction.",
-      "The website lacked a strong sense of trust.",
-    ],
-
-    solution:
-      "We designed the shopping experience around product discovery, confidence and a simplified checkout journey.",
-
-    approach: [
-      "Structured products into intuitive categories.",
-      "Designed product-focused cards and detail pages.",
-      "Improved filtering and discovery.",
-      "Simplified the cart and checkout flow.",
-      "Designed responsive mobile shopping interactions.",
-    ],
-
-    outcome:
-      "The result is a cleaner shopping experience that helps customers discover products and move toward purchase with less friction.",
+      "Delivered a functional full-stack conferencing platform that demonstrates real-time WebRTC communication, Socket.io signaling, live chat, authentication, database integration and meeting management.",
 
     technologies: [
       "React",
       "Node.js",
+      "Express.js",
       "MongoDB",
-      "Payment API",
-    ],
-  },
-
-  {
-    id: "05",
-    title: "AI Product Interface",
-    category: "Agentic AI",
-    shortDescription:
-      "An intelligent product experience designed around AI-powered workflows.",
-    image:
-      "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600&auto=format&fit=crop",
-
-    clientIdea:
-      "The client wanted to turn an AI capability into an actual product experience rather than simply exposing an AI chat interface.",
-
-    problem: [
-      "The AI capability existed but lacked a usable product interface.",
-      "Users did not know what actions the AI could perform.",
-      "The workflow needed to feel simple despite complex underlying logic.",
-    ],
-
-    solution:
-      "We designed an interface around tasks and outcomes rather than making the AI itself the center of the experience.",
-
-    approach: [
-      "Mapped the user workflow.",
-      "Defined AI actions and system states.",
-      "Designed conversational and structured interactions.",
-      "Created clear feedback states.",
-      "Built the interface around reusable components.",
-    ],
-
-    outcome:
-      "The AI becomes part of the product workflow instead of feeling like a separate technology layer.",
-
-    technologies: [
-      "React",
-      "Next.js",
-      "AI APIs",
-      "Node.js",
-    ],
-  },
-
-  {
-    id: "06",
-    title: "Product Redesign",
-    category: "Website Redesign",
-    shortDescription:
-      "A complete redesign focused on improving hierarchy, usability and responsiveness.",
-    image:
-      "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=1600&auto=format&fit=crop",
-
-    clientIdea:
-      "The client already had a working product but felt that the interface no longer represented where the company was heading.",
-
-    problem: [
-      "The interface had become inconsistent over time.",
-      "Important information competed for attention.",
-      "The experience was difficult to maintain and extend.",
-    ],
-
-    solution:
-      "We redesigned the product around a consistent design system and a cleaner information hierarchy.",
-
-    approach: [
-      "Audited the existing experience.",
-      "Identified UX inconsistencies.",
-      "Created reusable UI patterns.",
-      "Reworked page hierarchy.",
-      "Implemented responsive layouts.",
-    ],
-
-    outcome:
-      "The redesign creates a more coherent product experience and provides a stronger foundation for future development.",
-
-    technologies: [
-      "React",
-      "Next.js",
-      "Tailwind CSS",
-      "Motion",
+      "Mongoose",
+      "WebRTC",
+      "Socket.io",
+      "Material UI",
+      "React Router",
+      "Axios",
+      "Context API",
+      "JWT Authentication",
     ],
   },
 ];
