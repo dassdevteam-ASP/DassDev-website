@@ -67,6 +67,10 @@ export default function LaunchPage() {
   const handleEnter = () => {
     if (!isLaunched) return;
 
+    // Remember that this visitor has entered DASS DEV.
+    document.cookie =
+      "dassdev_launch_entered=1; Path=/; Max-Age=31536000; SameSite=Lax";
+
     setShowBlast(true);
 
     setTimeout(() => {
