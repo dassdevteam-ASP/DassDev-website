@@ -84,7 +84,7 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-   --loader-logo-start: currentColor;
+  --loader-logo-start: currentColor;
   --loader-logo-mid: currentColor;
   --loader-logo-end: currentColor;
 }
@@ -156,7 +156,6 @@
   }
 }
 
-
 .dass-logo-path {
   stroke-width: 5;
   stroke-linecap: round;
@@ -164,8 +163,7 @@
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   animation:
-    dass-logo-draw 1.15s cubic-bezier(0.65, 0, 0.35, 1)
-      forwards,
+    dass-logo-draw 1.15s cubic-bezier(0.65, 0, 0.35, 1) forwards,
     dass-logo-glow 1.8s ease-in-out 1.15s forwards;
 }
 
@@ -176,9 +174,8 @@
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   opacity: 0;
-  animation:
-    dass-logo-inner-draw 0.65s cubic-bezier(0.65, 0, 0.35, 1)
-      0.65s forwards;
+  animation: dass-logo-inner-draw 0.65s cubic-bezier(0.65, 0, 0.35, 1) 0.65s
+    forwards;
 }
 
 .dass-logo-dot {
@@ -191,8 +188,7 @@
   opacity: 0;
   transform: translateY(14px);
   filter: blur(5px);
-  animation: dass-letter-reveal 0.45s
-    cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: dass-letter-reveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes dass-logo-draw {
@@ -247,15 +243,13 @@
 
   45% {
     filter: drop-shadow(
-      0 0 12px
-      color-mix(in srgb, currentColor 35%, transparent)
+      0 0 12px color-mix(in srgb, currentColor 35%, transparent)
     );
   }
 
   100% {
     filter: drop-shadow(
-      0 0 5px
-      color-mix(in srgb, currentColor 18%, transparent)
+      0 0 5px color-mix(in srgb, currentColor 18%, transparent)
     );
   }
 }
@@ -284,5 +278,75 @@
     transform: none;
     filter: none;
     stroke-dashoffset: 0;
+  }
+}
+
+/* Chat scrollbar styling */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 10px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: oklch(0.97 0 0);
+  border-radius: 6px;
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-track {
+  background: oklch(0.269 0 0);
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: oklch(0.556 0 0);
+  border-radius: 6px;
+  border: 2px solid oklch(0.97 0 0);
+  background-clip: padding-box;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.145 0 0);
+  border-color: oklch(0.97 0 0);
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+  background: oklch(0.708 0 0);
+  border-color: oklch(0.269 0 0);
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.985 0 0);
+  border-color: oklch(0.269 0 0);
+}
+
+/* Chat animations */
+@keyframes zoom-in-95 {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }
