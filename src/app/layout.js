@@ -4,6 +4,7 @@ import ThemeProvider from "@/components/ThemeProvider";
 import { Toaster } from "sonner";
 import StructuredData from "@/components/seo/StructuredData";
 import PageLoadering from "@/components/PageLoader";
+import { ChatWidget } from "@/components/ai-chat/ChatWidget";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -115,11 +116,12 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <PageLoadering/>
+        <PageLoadering />
         <ThemeProvider>
-          <StructuredData/>
+          <StructuredData />
           {children}
           <Toaster />
+          <ChatWidget />
         </ThemeProvider>
       </body>
     </html>
